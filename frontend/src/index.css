@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Noto Sans Arabic", sans-serif;
+  background: #f6fafe;
+  color: #171c1f;
+}
+
+[dir="rtl"] body,
+[dir="rtl"] {
+  font-family: "Noto Sans Arabic", "Inter", sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  line-height: 1;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dark .glass {
+  background: rgba(16, 24, 22, 0.65);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e8edf0 0px, #f8fbfd 40px, #e8edf0 80px);
+  background-size: 800px;
+  animation: shimmer 1.8s linear infinite;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

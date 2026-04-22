@@ -1,0 +1,53 @@
+import os
+from dataclasses import dataclass
+from pydantic import BaseModel , Field 
+from pydantic_settings import BaseSettings , SettingsConfigDict
+from typing import ClassVar
+
+
+class QdrantSettings(BaseModel):
+    url: str = Field(default="", description="Qdrant API URL")
+    api_key: str = Field(default="", description="Qdrant API key")
+    collection_name: str = Field(
+        default="plant_diseases_kb", description="Qdrant collection name")
+    embedding_model: str = Field(
+        default="sentence-transformers/all-MiniLM-L6-v2",
+        description="FastEmbed model used by Qdrant client",
+    )
+    upload_batch_size: int = Field(
+        default=64, description="Batch size used during point upload"
+    )
+    data_json_path: str = Field(
+        default="chatbot/diseases_from_md_clean.json",
+        description="Path to cleaned disease JSON data",
+    )
+
+class HuggingFaceSettings(BaseModel):
+    model_name: str = Field(default="sentence-transformers/all-MiniLM-L6-v2", description="Hugging Face model name")
+    model_dimensions: int = Field(default=384, description="Dimensionality of the model's output embeddings")
+
+
+class GroqSettings(BaseModel):
+    api_key: str = Field(default="", description="Groq API key")
+    base_url: str = Field(default="https://api.groq.com/openai/v1", description="Groq OpenAI-compatible base URL")
+    model: str = Field(default="qwen/qwen3-32b", description="Groq model name")
+    temperature: float = Field(default=0.2, description="Sampling temperature")
+
+
+class Settings(BaseSettings):
+    qdrant: QdrantSettings = Field(default_factory=QdrantSettings)
+    huggingface: HuggingFaceSettings = Field(default_factory=HuggingFaceSettings)
+    groq: GroqSettings = Field(default_factory=GroqSettings)
+    
+    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+        env_file=[".env"],
+        env_file_encoding="utf-8",
+        extra="ignore",
+        env_nested_delimiter="__",
+        case_sensitive=False,
+        frozen=True,
+    )
+
+ 
+
+settings = Settings()

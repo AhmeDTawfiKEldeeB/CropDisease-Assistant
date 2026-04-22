@@ -1,0 +1,12 @@
+[project]
+name = "depi-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.13.3",
+    "pydantic-settings>=2.14.0",
+    "qdrant-client==1.17.1",
+    "sentence-transformers>=5.4.1",
+]
