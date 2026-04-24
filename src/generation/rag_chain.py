@@ -48,8 +48,7 @@ NEED_MORE_INFO = {
     "help identify", "what's this", "disease?", " diagnose?", "identify"
 }
 
-DEFAULT_ANSWER = "I'm not sure. Please provide more details about the symptoms or upload an image."
-
+DEFAULT_ANSWER = "I’m not certain about that. You can ask about symptoms, causes, or treatment and I’ll try to help."
 _embedder_cache: Optional[SentenceTransformer] = None
 
 
@@ -122,7 +121,7 @@ def _build_prompt(question: str, contexts: List[Dict[str, Any]], history: Option
             parts.append("Conversation:\n" + "\n".join(history_text))
 
     if not contexts:
-        parts.append("No context found. Say you're not sure and ask for more details.")
+        return DEFAULT_ANSWER
     else:
         context_lines: List[str] = []
         for idx, item in enumerate(contexts, start=1):
@@ -158,7 +157,7 @@ def _check_special_cases(question: str) -> Optional[Dict[str, Any]]:
 
     if q in GREETINGS or q.startswith(("hi ", "hello ", "hey ")):
         return {
-            "answer": "Hello! I'm your agricultural disease assistant. Describe the symptoms or upload an image to get a diagnosis.",
+            "answer": DEFAULT_ANSWER,
             "model": settings.groq.model,
             "contexts": [],
             "retrieval_error": "",
@@ -166,7 +165,7 @@ def _check_special_cases(question: str) -> Optional[Dict[str, Any]]:
 
     if any(pattern in q for pattern in NEED_MORE_INFO):
         return {
-            "answer": "To help diagnose, please describe the symptoms (leaf spots, yellowing, wilting, etc.) or upload an image of the affected plant.",
+            "answer": DEFAULT_ANSWER,
             "model": settings.groq.model,
             "contexts": [],
             "retrieval_error": "",
@@ -254,7 +253,17 @@ def ask_rag(question: str, top_k: int = 5, history: Optional[List[Dict[str, str]
         provider.disconnect()
 
     contexts = _extract_context(points)
+    valid_contexts = [c for c in contexts if c.get("score", 0) > 0.5]
 
+    if not valid_contexts:
+        return {
+            "answer": DEFAULT_ANSWER,
+            "model": settings.groq.model,
+            "contexts": [],
+            "retrieval_error": retrieval_error,
+        }
+
+    contexts = valid_contexts
     messages: List[Dict[str, str]] = [
         {
             "role": "system",
