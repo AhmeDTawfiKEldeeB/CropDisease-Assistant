@@ -1,3 +1,4 @@
 qdrant-client==1.17.1
 sentence-transformers==3.0.1
 openai==1.82.0
+langsmith

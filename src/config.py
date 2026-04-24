@@ -32,12 +32,19 @@ class GroqSettings(BaseModel):
     base_url: str = Field(default="https://api.groq.com/openai/v1", description="Groq OpenAI-compatible base URL")
     model: str = Field(default="qwen/qwen3-32b", description="Groq model name")
     temperature: float = Field(default=0.2, description="Sampling temperature")
+    max_tokens: int = Field(default=512, description="Max tokens in response")
+
+
+class LangSmithSettings(BaseModel):
+    api_key: str = Field(default="", description="LangSmith API key")
+    tracing: bool = Field(default=False, description="Enable LangSmith tracing")
 
 
 class Settings(BaseSettings):
     qdrant: QdrantSettings = Field(default_factory=QdrantSettings)
     huggingface: HuggingFaceSettings = Field(default_factory=HuggingFaceSettings)
     groq: GroqSettings = Field(default_factory=GroqSettings)
+    langsmith: LangSmithSettings = Field(default_factory=LangSmithSettings)
     
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
         env_file=[".env"],
