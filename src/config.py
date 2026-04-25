@@ -7,9 +7,9 @@ from typing import ClassVar
 class QdrantSettings(BaseModel):
     url: str = Field(default="", description="Qdrant API URL")
     api_key: str = Field(default="", description="Qdrant API key")
-    collection_name: str = Field(default="plant_diseases", description="Qdrant collection name")
+    collection_name: str = Field(default="plant_diseases1", description="Qdrant collection name")
     upload_batch_size: int = Field(default=64, description="Batch size used during point upload")
-    data_json_path: str = Field(default="D:\\Ahmed\\Ahmed\\projects\\CropDisease-Assistant\\chatbot\\diseases_enriched.json", description="Path to cleaned disease JSON data")
+    data_json_path: str = Field(default="chatbot/diseases_expanded.json", description="Path to cleaned disease JSON data")
 
 
 class HuggingFaceSettings(BaseModel):
@@ -24,8 +24,8 @@ class GroqSettings(BaseModel):
     api_key: str = Field(default="", description="Groq API key")
     base_url: str = Field(default="https://api.groq.com/openai/v1", description="Groq OpenAI-compatible base URL")
     model: str = Field(default="qwen/qwen3-32b", description="Groq model name")
-    temperature: float = Field(default=0.2, description="Sampling temperature")
-    max_tokens: int = Field(default=150, description="Max tokens in response")
+    temperature: float = Field(default=0.3, description="Sampling temperature")
+    max_tokens: int = Field(default=350, description="Max tokens in response")
 
 
 class LangSmithSettings(BaseModel):
