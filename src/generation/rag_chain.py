@@ -292,16 +292,21 @@ def _mapped_names(text: str) -> List[str]:
 
 def _intent(question: str) -> str:
     q = _norm(question)
-    if any(word in q for word in ("treatment", "treat", "control", "manage", "cure", "علاج", "مكافحة")):
-        return "treatment"
-    if any(word in q for word in ("symptom", "sign", "look like", "اعراض", "أعراض", "علامات", "شكل")):
-        return "symptoms"
-    if any(word in q for word in ("cause", "pathogen", "caused by", "سبب", "المسبب")):
-        return "cause"
-    if any(word in q for word in ("what is", "define", "ما هو", "ايه هو", "ماهي")):
-        return "definition"
-    return "general"
 
+    if any(word in q for word in ("treatment", "treat", "control", "manage", "cure","علاج", "مكافحة", "اتعالج", "اعالج", "يتعالج", "حل", "اعمل اي", "اعمل ايه", "اتصرف ازاي","ازاي اعالجه", "ازاي اتعامل معاه"
+    )):
+        return "treatment"
+
+    if any(word in q for word in ("symptom", "sign", "look like","اعراض", "أعراض", "علامات", "شكل", "شكله اي","بيبان ازاي", "شكله عامل ازاي","ازاي اعرفه", "ازاي اعرف المرض","بيظهر ازاي")):
+        return "symptoms"
+
+    if any(word in q for word in ("cause", "pathogen", "caused by","سبب", "المسبب", "سببه اي","بيجي من اي", "بيظهر من اي", "ليه بيظهر","ايه السبب", "سبب ظهوره","ازاي بينتشر", "بينتقل ازاي")):
+        return "cause"
+
+    if any(word in q for word in ("what is", "define","ما هو", "ايه هو", "ماهي", "يعني ايه","هو اي", "ده اي", "ده ايه")):
+        return "definition"
+
+    return "general"
 
 def _query(question: str, history: Sequence[Dict[str, str]]) -> str:
     recent = [message["content"] for message in history[-4:]]

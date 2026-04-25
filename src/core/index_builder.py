@@ -3,9 +3,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 from uuid import NAMESPACE_URL, uuid5
-
 from sentence_transformers import SentenceTransformer
-
 from src.config import settings
 from src.infrastructure.qdrant.vectorstore import QdrantDBProvider
 
