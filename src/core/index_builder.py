@@ -27,7 +27,7 @@ def _load_records(path: Path) -> List[Dict[str, Any]]:
     return raw
 
 
-def _prepare_points(records: List[Dict[str, Any]]) -> Tuple[List[str], List[Dict[str, Any]], List[str]]:
+def _prepare_records(records: List[Dict[str, Any]]) -> Tuple[List[str], List[Dict[str, Any]], List[str]]:
     texts: List[str] = []
     payloads: List[Dict[str, Any]] = []
     ids: List[str] = []
@@ -46,7 +46,6 @@ def _prepare_points(records: List[Dict[str, Any]]) -> Tuple[List[str], List[Dict
 
         texts.append(text)
         payloads.append({"text": text, "metadata": metadata})
-        # Qdrant Cloud accepts UUID or unsigned int IDs. Use deterministic UUIDs.
         ids.append(str(uuid5(NAMESPACE_URL, f"disease-record:{idx}")))
 
     return texts, payloads, ids
@@ -65,8 +64,7 @@ def build_index(data_path: str | None = None, recreate_collection: bool = True) 
         input_path = _resolve_data_path(data_path)
         records = _load_records(input_path)
 
-        embedding_model = settings.huggingface.model_name
-        embedder = SentenceTransformer(embedding_model)
+        embedder = SentenceTransformer(settings.huggingface.model_name)
         embedding_size = int(embedder.get_sentence_embedding_dimension())
 
         provider.create_collection(
@@ -75,7 +73,7 @@ def build_index(data_path: str | None = None, recreate_collection: bool = True) 
             do_reset=recreate_collection,
         )
 
-        texts, payloads, ids = _prepare_points(records)
+        texts, payloads, ids = _prepare_records(records)
         if not texts:
             return 0
 
@@ -117,7 +115,7 @@ def main() -> None:
     inserted = build_index(data_path=args.data_path, recreate_collection=not args.no_recreate)
     print(
         f"Indexed {inserted} records into collection '{settings.qdrant.collection_name}' "
-        f"using HuggingFace model '{settings.huggingface.model_name}'"
+        f"using multilingual model '{settings.huggingface.model_name}'"
     )
 
 
