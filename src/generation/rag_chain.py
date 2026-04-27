@@ -25,7 +25,6 @@ Rules:
 - Answer in the same language as the user's latest question.
 - Answer only the latest question.
 - Use only the supplied knowledge-base context for crop disease facts.
-- Use history only to understand references like "it", "this disease", or "علاجه","سببه اي.
 - Keep the answer short and direct.
 - Do not add extra sections, tables, or steps unless the user asks for them.
 - Do not invent diagnoses, pesticides, chemicals, dosages, or treatments.
@@ -40,17 +39,52 @@ Rules:
 """
 
 NO_CONTEXT = "No relevant context was retrieved. Do not answer from outside knowledge."
-MAX_HISTORY = 5
 MAX_CONTEXT_CHARS = 5000
 
 INTENT_SECTIONS = {
-    "treatment": ("treatment", "management", "control", "prevention"),
-    "symptoms": ("symptoms", "signs", "simple explanation", "overview"),
-    "cause": ("cause", "pathogen", "spread", "disease cycle", "overview"),
-    "definition": ("simple explanation", "overview", "pathogen"),
-    "spread": ("spread", "disease cycle"),
-    "conditions": ("favorable conditions", "environment", "conditions"),
-    "general": ("overview", "simple explanation", "symptoms", "management"),
+    # Canonical section names for the new KB schema.
+    "treatment": ("treatment", "quick_actions", "favorable_conditions"),
+    "symptoms": ("symptoms", "definition", "severity"),
+    "cause": ("pathogen_biology", "spread", "disease_cycle", "definition"),
+    "definition": ("definition", "pathogen_biology", "symptoms"),
+    "spread": ("spread", "disease_cycle", "spread_time"),
+    "conditions": ("favorable_conditions", "spread_time"),
+    "general": ("definition", "symptoms", "treatment", "spread"),
+}
+
+SECTION_ALIASES = {
+    "simple explanation": "definition",
+    "simple_explanation": "definition",
+    "overview": "definition",
+    "severity danger level": "severity",
+    "severity and danger level": "severity",
+    "severity_danger_level": "severity",
+    "severity_and_danger_level": "severity",
+    "time to spread": "spread_time",
+    "time_to_spread": "spread_time",
+    "how does it spread": "spread",
+    "how it spreads": "spread",
+    "how_does_it_spread": "spread",
+    "how_it_spreads": "spread",
+    "pathogen biology": "pathogen_biology",
+    "pathogen_biology": "pathogen_biology",
+    "favorable conditions": "favorable_conditions",
+    "favorable_conditions": "favorable_conditions",
+    "disease cycle": "disease_cycle",
+    "disease_cycle": "disease_cycle",
+    "treatment and management": "treatment",
+    "treatment_management": "treatment",
+    "quick actions": "quick_actions",
+    "quick_actions": "quick_actions",
+    "quick actions what to do right now": "quick_actions",
+    "quick_actions_what_to_do_right_now": "quick_actions",
+    "scouting and monitoring": "monitoring",
+    "scouting monitoring guide": "monitoring",
+    "scouting_and_monitoring": "monitoring",
+    "scouting_monitoring_guide": "monitoring",
+    "geographic distribution": "distribution",
+    "geographic_distribution": "distribution",
+    "frequently asked questions": "faq",
 }
 
 ARABIC_BLACK_ROT = ("العفن الاسود", "العفن الأسود", "عفن اسود", "عفن أسود")
@@ -186,7 +220,19 @@ def _name_keys(name: str) -> List[str]:
                 keys.add(_norm(f"{left} {right}"))
                 keys.add(_norm(f"{right} {left}"))
                 keys.add(_norm(left))
-    return [key for key in keys if key]
+    filtered: List[str] = []
+    for key in keys:
+        if not key:
+            continue
+        if len(key) < 3:
+            continue
+        tokens = [token for token in key.split() if token]
+        if not tokens:
+            continue
+        if all(len(token) <= 1 for token in tokens):
+            continue
+        filtered.append(key)
+    return filtered
 
 
 def _has_arabic(text: str) -> bool:
@@ -241,7 +287,14 @@ def _name_map() -> Dict[str, Dict[str, str]]:
         if not en:
             continue
         names = {"en": en, "ar": ar}
-        for name in (en, ar):
+        aliases = [
+            en,
+            ar,
+            _text(meta.get("disease_base"), 200),
+            _text(meta.get("pathogen"), 200),
+            *_meta_synonyms(meta),
+        ]
+        for name in aliases:
             for key in _name_keys(name):
                 mapping[key] = names
     for alias in ARABIC_BLACK_ROT:
@@ -266,19 +319,6 @@ def _augment_meta(meta: Any) -> Dict[str, Any]:
     return dict(meta)
 
 
-def _history(history: Optional[Sequence[Dict[str, str]]]) -> List[Dict[str, str]]:
-    role_map = {"ai": "assistant", "bot": "assistant", "human": "user"}
-    clean: List[Dict[str, str]] = []
-    for item in history or []:
-        if not isinstance(item, dict):
-            continue
-        role = role_map.get(str(item.get("role", "")).lower(), str(item.get("role", "")).lower())
-        content = _text(item.get("content"), 1200)
-        if role in {"user", "assistant"} and content:
-            clean.append({"role": role, "content": content})
-    return clean[-MAX_HISTORY:]
-
-
 def _matches_name(key: str, text: str) -> bool:
     if key in text:
         return True
@@ -288,23 +328,13 @@ def _matches_name(key: str, text: str) -> bool:
     return bool(key_tokens) and all(part in text_tokens for part in key_tokens)
 
 
-def _mapped_names(text: str, history: Optional[Sequence[Dict[str, str]]] = None) -> List[str]:
+def _mapped_names(text: str) -> List[str]:
     normalized = _norm(text)
     found: List[str] = []
 
     for key, names in _name_map().items():
         if _matches_name(key, normalized):
             found.extend(name for name in names.values() if name)
-
-    if not found and history:
-        for msg in reversed(history[-5:]):
-            content = _norm(msg.get("content", ""))
-            for key, names in _name_map().items():
-                if _matches_name(key, content):
-                    found.extend(name for name in names.values() if name)
-                    break
-            if found:
-                break
 
     if not found:
         tokens = normalized.split()
@@ -313,6 +343,73 @@ def _mapped_names(text: str, history: Optional[Sequence[Dict[str, str]]] = None)
                 found.append(token)
 
     return list(dict.fromkeys(found))
+
+
+def _meta_section(meta: Dict[str, Any]) -> str:
+    section = _text(meta.get("section") or meta.get("section_title"), 120)
+    normalized = _norm(section)
+    if not normalized:
+        return "general"
+    return SECTION_ALIASES.get(normalized, normalized)
+
+
+def _meta_synonyms(meta: Dict[str, Any]) -> List[str]:
+    def keep(value: str) -> bool:
+        cleaned = _norm(value)
+        if not cleaned:
+            return False
+        words = [w for w in cleaned.split() if w]
+        if len(words) > 4:
+            return False
+        noisy_markers = {
+            "particularly",
+            "production",
+            "regions",
+            "worldwide",
+            "growing",
+            "areas",
+        }
+        return not any(marker in words for marker in noisy_markers)
+
+    raw = meta.get("synonyms")
+    if isinstance(raw, list):
+        return [_text(item, 120) for item in raw if _text(item, 120) and keep(_text(item, 120))]
+    if isinstance(raw, str):
+        return [_text(item, 120) for item in re.split(r",|;|\|", raw) if _text(item, 120) and keep(_text(item, 120))]
+    return []
+
+
+def _disease_signal(meta: Dict[str, Any]) -> str:
+    parts = [
+        _text(meta.get("disease_name"), 200),
+        _text(meta.get("disease_name_ar"), 200),
+        _text(meta.get("disease_base"), 200),
+        _text(meta.get("plant"), 200),
+        _text(meta.get("pathogen"), 200),
+        " ".join(_meta_synonyms(meta)),
+    ]
+    return _norm(" ".join(parts))
+
+
+def _dominant_disease(contexts: Sequence[Dict[str, Any]]) -> str:
+    tally: Dict[str, float] = {}
+    for ctx in contexts:
+        meta = ctx.get("metadata") or {}
+        disease = _norm(meta.get("disease_name"))
+        if not disease:
+            continue
+        tally[disease] = tally.get(disease, 0.0) + max(float(ctx.get("score", 0.0) or 0.0), 1.0)
+    if not tally:
+        return ""
+    return max(tally.items(), key=lambda item: item[1])[0]
+
+
+def _section_bonus(section: str, wanted: Sequence[str]) -> float:
+    try:
+        idx = list(wanted).index(section)
+    except ValueError:
+        return 0.0
+    return float(max(1, 5 - idx))
 
 
 def _intent(question: str) -> str:
@@ -356,10 +453,9 @@ def _intent(question: str) -> str:
 
 
 
-def _query(question: str, history: Sequence[Dict[str, str]]) -> str:
-    recent = [message["content"] for message in history[-4:]]
-    names = _mapped_names("\n".join([*recent, question]), history)
-    return "\n".join([*recent, *names, question])
+def _query(question: str) -> str:
+    names = _mapped_names(question)
+    return "\n".join([*names, question])
 
 
 def _point_context(point: Any) -> Optional[Dict[str, Any]]:
@@ -379,57 +475,83 @@ def _point_context(point: Any) -> Optional[Dict[str, Any]]:
 def _extra_contexts(contexts: Sequence[Dict[str, Any]], question: str, limit: int = 3) -> List[Dict[str, Any]]:
     if not contexts:
         return []
-    disease = _norm((contexts[0].get("metadata") or {}).get("disease_name"))
+    disease = _dominant_disease(contexts)
     if not disease:
         return []
 
-    wanted = INTENT_SECTIONS.get(_intent(question), ("overview", "simple explanation", "symptoms"))
+    wanted = INTENT_SECTIONS.get(_intent(question), INTENT_SECTIONS["general"])
     seen = {_norm(item.get("text")) for item in contexts}
+    seen_sections = {_meta_section(item.get("metadata") or {}) for item in contexts}
+    candidates: List[Tuple[float, Dict[str, Any]]] = []
     extras: List[Dict[str, Any]] = []
 
     for record in _kb():
         meta = _augment_meta(record.get("metadata"))
         if _norm(meta.get("disease_name")) != disease:
             continue
-        section = _norm(meta.get("section_title"))
+        section = _meta_section(meta)
         text = _text(record.get("text"), 2200)
         if not text or _norm(text) in seen:
             continue
-        if any(word in section for word in wanted) or len(extras) < 1:
-            extras.append({"text": text, "metadata": meta, "score": 0.0})
+
+        score = 0.0
+        score += _section_bonus(section, wanted)
+        if section not in seen_sections:
+            score += 1.5
+        candidates.append((score, {"text": text, "metadata": meta, "score": 0.0}))
+
+    for _, context in sorted(candidates, key=lambda item: item[0], reverse=True):
+        section = _meta_section(context.get("metadata") or {})
+        if section in seen_sections:
+            continue
+        extras.append(context)
+        seen_sections.add(section)
         if len(extras) >= limit:
             break
+
     return extras
 
 
-def _local_contexts(question: str, history: Sequence[Dict[str, str]], limit: int) -> List[Dict[str, Any]]:
-    query = _norm(_query(question, history))
-    names = [_norm(name) for name in _mapped_names(query, history)]
-    wanted = INTENT_SECTIONS.get(_intent(question), ("overview", "simple explanation", "symptoms"))
+def _local_contexts(question: str, limit: int) -> List[Dict[str, Any]]:
+    query = _norm(_query(question))
+    question_norm = _norm(question)
+    names = [_norm(name) for name in _mapped_names(question) if _norm(name)]
+    wanted = INTENT_SECTIONS.get(_intent(question), INTENT_SECTIONS["general"])
+    query_tokens = [token for token in query.split() if len(token) > 2]
     results: List[Tuple[int, Dict[str, Any]]] = []
 
     for record in _kb():
         meta = _augment_meta(record.get("metadata"))
         disease = _norm(meta.get("disease_name"))
-        section = _norm(meta.get("section_title"))
+        section = _meta_section(meta)
         text = _text(record.get("text"), 2200)
         if not text:
             continue
 
-        disease_names = _norm(" ".join([disease, _text(meta.get("disease_name_ar"), 200)]))
-        haystack = _norm(" ".join([disease_names, section, text[:500]]))
+        disease_names = _disease_signal(meta)
+        haystack = _norm(" ".join([disease_names, section, text[:700]]))
 
-        if not any(name in haystack for name in names):
-            if not any(name.split()[0] in haystack for name in names):
+        full_hits = sum(1 for name in names if name and name in haystack)
+        disease_hits = sum(1 for name in names if name and name in disease_names)
+        prefix_hits = sum(1 for name in names if name and name.split() and name.split()[0] in haystack)
+        token_hits = sum(1 for token in query_tokens if token in haystack)
+
+        if names and full_hits == 0 and prefix_hits == 0:
+            if token_hits < 2:
                 continue
 
-        score = 0
-        score += sum(3 for name in names if name and name in haystack)
-        score += sum(1 for token in query.split() if len(token) > 2 and token in haystack)
-        score += 2 if any(word in section for word in wanted) else 0
+        if not names and token_hits < 2:
+            continue
 
-        if disease and disease in haystack:
-            score += 5
+        score = 0
+        score += disease_hits * 8
+        score += full_hits * 4
+        score += prefix_hits * 2
+        score += token_hits
+        score += int(_section_bonus(section, wanted))
+
+        if disease and disease in question_norm:
+            score += 6
 
         if score:
             results.append((score, {"text": text, "metadata": meta, "score": float(score)}))
@@ -441,7 +563,7 @@ def _local_contexts(question: str, history: Sequence[Dict[str, str]], limit: int
 
     for _, context in results:
         disease = _norm(context["metadata"].get("disease_name"))
-        section = _norm(context["metadata"].get("section_title"))
+        section = _meta_section(context["metadata"])
 
         if (disease, section) in seen_sections:
             continue
@@ -466,26 +588,58 @@ def _merge_contexts(contexts: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return merged
 
 
-def _retrieve(question: str, history: Sequence[Dict[str, str]], top_k: int) -> Tuple[List[Dict[str, Any]], str]:
+def _rerank_contexts(contexts: Sequence[Dict[str, Any]], question: str, limit: int) -> List[Dict[str, Any]]:
+    names = [_norm(name) for name in _mapped_names(question) if _norm(name)]
+    wanted = INTENT_SECTIONS.get(_intent(question), INTENT_SECTIONS["general"])
+    ranked: List[Tuple[float, Dict[str, Any]]] = []
+
+    for context in contexts:
+        meta = context.get("metadata") or {}
+        section = _meta_section(meta)
+        disease_names = _disease_signal(meta)
+        haystack = _norm(" ".join([disease_names, section, _text(context.get("text"), 800)]))
+
+        score = float(context.get("score", 0.0) or 0.0)
+        score += _section_bonus(section, wanted)
+        score += sum(3.0 for name in names if name and name in disease_names)
+        score += sum(1.5 for name in names if name and name in haystack)
+
+        ranked.append((score, {**context, "score": score}))
+
+    ranked.sort(key=lambda item: item[0], reverse=True)
+
+    final: List[Dict[str, Any]] = []
+    seen = set()
+    for _, context in ranked:
+        meta = context.get("metadata") or {}
+        key = (_norm(meta.get("disease_name")), _meta_section(meta), _norm(context.get("text")))
+        if key in seen:
+            continue
+        final.append(context)
+        seen.add(key)
+        if len(final) >= limit:
+            break
+    return final
+
+
+def _retrieve(question: str, top_k: int) -> Tuple[List[Dict[str, Any]], str]:
     provider = None
     try:
         provider = _qdrant()
         provider.connect()
-        vector = _embedder().encode([_query(question, history)], normalize_embeddings=True, convert_to_numpy=True).tolist()[0]
+        vector = _embedder().encode([_query(question)], normalize_embeddings=True, convert_to_numpy=True).tolist()[0]
         points = provider.search_by_vector(
             collection_name=settings.qdrant.collection_name,
             vector=vector,
             limit=min(top_k * 2, 20),
         )
-        contexts = [ctx for point in points for ctx in [_point_context(point)] if ctx]
-        local = _local_contexts(question, history, top_k)
-        contexts = _merge_contexts([*local, *contexts])[:top_k]
-        if not contexts and history:
-            contexts = _local_contexts(history[-1]["content"], history, top_k)  
+        vector_contexts = [ctx for point in points for ctx in [_point_context(point)] if ctx]
+        local = _local_contexts(question, top_k)
+        contexts = _rerank_contexts(_merge_contexts([*local, *vector_contexts]), question, top_k)
         return contexts + _extra_contexts(contexts, question), ""
     except Exception as exc:
         logger.warning("Qdrant retrieval failed; using local KB fallback: %s", exc)
-        contexts = _local_contexts(question, history, top_k)
+        contexts = _rerank_contexts(_local_contexts(question, top_k * 2), question, top_k)
         contexts = contexts + _extra_contexts(contexts, question)
         return contexts, "" if contexts else str(exc)
     finally:
@@ -493,21 +647,19 @@ def _retrieve(question: str, history: Sequence[Dict[str, str]], top_k: int) -> T
             provider.disconnect()
 
 
-def _messages(question: str, history: Sequence[Dict[str, str]], contexts: Sequence[Dict[str, Any]]) -> List[Dict[str, str]]:
+def _messages(question: str, contexts: Sequence[Dict[str, Any]]) -> List[Dict[str, str]]:
     context = "\n\n".join(
         f"[{i}] metadata={json.dumps(c.get('metadata', {}), ensure_ascii=False)}\n{c.get('text', '')}"
         for i, c in enumerate(contexts, 1)
     )[:MAX_CONTEXT_CHARS] or NO_CONTEXT
-    recent = "\n".join(f"{m['role']}: {m['content']}" for m in history[-4:]) or "(none)"
     language = "Arabic" if _has_arabic(question) else "English"
 
     user_prompt = (
         f"Required answer language: {language}\n\n"
-        f"Recent conversation:\n{recent}\n\n"
         f"Knowledge-base context:\n{context}\n\n"
         f"Latest user question:\n{question}"
     )
-    return [{"role": "system", "content": SYSTEM_PROMPT}, *history, {"role": "user", "content": user_prompt}]
+    return [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": user_prompt}]
 
 
 def _generate(messages: Sequence[Dict[str, str]]) -> Tuple[str, str, Dict[str, Any]]:
@@ -543,14 +695,14 @@ def ask_rag(question: str, top_k: int = 5, history: Optional[Sequence[Dict[str, 
     if top_k < 1 or top_k > 20:
         raise ValueError("top_k must be between 1 and 20")
 
-    clean_history = _history(history)
-    with TraceSpan("rag_chain", "chain", {"question": question, "top_k": top_k, "history_count": len(clean_history)}) as root:
+    _ = history  # Kept for API compatibility; RAG now ignores conversation memory/history.
+    with TraceSpan("rag_chain", "chain", {"question": question, "top_k": top_k, "history_count": 0}) as root:
         with TraceSpan("retrieve_context", "retriever", {"question": question, "top_k": top_k}, root.id) as retriever:
-            contexts, retrieval_error = _retrieve(question, clean_history, top_k)
+            contexts, retrieval_error = _retrieve(question, top_k)
             retriever.outputs = {"contexts_count": len(contexts),"retrieval_error": retrieval_error,  "contexts": contexts }
 
         with TraceSpan("build_prompt", "prompt", {"question": question, "contexts": contexts}, root.id) as prompt:
-            messages = _messages(question, clean_history, contexts)
+            messages = _messages(question, contexts)
             prompt.outputs = {"messages_count": len(messages)}
 
         with TraceSpan("llm_generate", "llm", {"model": settings.groq.model, "messages": messages}, root.id) as llm:
