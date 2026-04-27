@@ -25,23 +25,32 @@ Rules:
 - Answer in the same language as the user's latest question.
 - Answer only the latest question.
 - Use only the supplied knowledge-base context for crop disease facts.
-- Use history only to understand references like "it", "this disease", or "علاجه".
+- Use history only to understand references like "it", "this disease", or "علاجه","سببه اي.
 - Keep the answer short and direct.
 - Do not add extra sections, tables, or steps unless the user asks for them.
 - Do not invent diagnoses, pesticides, chemicals, dosages, or treatments.
 - If the context is not enough, say you do not have enough information to answer confidently.
 - If a disease name is broad and appears in more than one crop, give the shared meaning first, then mention that crop-specific details may differ.
+- Do not say phrases like "according to the provided context" or "based on the knowledge base".
+- Answer naturally like a human expert.
+- Keep answers concise but complete.
+- If the answer is long, summarize the most important points instead of listing everything.
+- Prefer short, natural sentences over long detailed explanations.
+- Always mention the specific pathogen name when answering cause questions if available.
 """
 
 NO_CONTEXT = "No relevant context was retrieved. Do not answer from outside knowledge."
-MAX_HISTORY = 10
-MAX_CONTEXT_CHARS = 10000
+MAX_HISTORY = 5
+MAX_CONTEXT_CHARS = 5000
 
 INTENT_SECTIONS = {
     "treatment": ("treatment", "management", "control", "prevention"),
     "symptoms": ("symptoms", "signs", "simple explanation", "overview"),
     "cause": ("cause", "pathogen", "spread", "disease cycle", "overview"),
     "definition": ("simple explanation", "overview", "pathogen"),
+    "spread": ("spread", "disease cycle"),
+    "conditions": ("favorable conditions", "environment", "conditions"),
+    "general": ("overview", "simple explanation", "symptoms", "management"),
 }
 
 ARABIC_BLACK_ROT = ("العفن الاسود", "العفن الأسود", "عفن اسود", "عفن أسود")
@@ -279,38 +288,77 @@ def _matches_name(key: str, text: str) -> bool:
     return bool(key_tokens) and all(part in text_tokens for part in key_tokens)
 
 
-def _mapped_names(text: str) -> List[str]:
+def _mapped_names(text: str, history: Optional[Sequence[Dict[str, str]]] = None) -> List[str]:
     normalized = _norm(text)
     found: List[str] = []
+
     for key, names in _name_map().items():
         if _matches_name(key, normalized):
             found.extend(name for name in names.values() if name)
-    if "black rot" in normalized or any(_norm(alias) in normalized for alias in ARABIC_BLACK_ROT):
-        found.extend(["Black Rot", "Black Rot - Apple", "Black Rot - Grape", *ARABIC_BLACK_ROT])
+
+    if not found and history:
+        for msg in reversed(history[-5:]):
+            content = _norm(msg.get("content", ""))
+            for key, names in _name_map().items():
+                if _matches_name(key, content):
+                    found.extend(name for name in names.values() if name)
+                    break
+            if found:
+                break
+
+    if not found:
+        tokens = normalized.split()
+        for token in tokens:
+            if len(token) > 4:
+                found.append(token)
+
     return list(dict.fromkeys(found))
 
 
 def _intent(question: str) -> str:
     q = _norm(question)
 
-    if any(word in q for word in ("treatment", "treat", "control", "manage", "cure","علاج", "مكافحة", "اتعالج", "اعالج", "يتعالج", "حل", "اعمل اي", "اعمل ايه", "اتصرف ازاي","ازاي اعالجه", "ازاي اتعامل معاه"
-    )):
+    if len(q.split()) <= 3:
+        return "general"
+
+    if any(word in q for word in ("treatment", "treat", "control", "manage", "cure",
+                                 "علاج", "مكافحة", "اتعالج", "اعالج", "يتعالج",
+                                 "حل", "اعمل اي", "اعمل ايه", "اتصرف ازاي",
+                                 "ازاي اعالجه", "ازاي اتعامل معاه")):
         return "treatment"
 
-    if any(word in q for word in ("symptom", "sign", "look like","اعراض", "أعراض", "علامات", "شكل", "شكله اي","بيبان ازاي", "شكله عامل ازاي","ازاي اعرفه", "ازاي اعرف المرض","بيظهر ازاي")):
+    if any(word in q for word in ("symptom", "sign", "look like",
+                                 "اعراض", "أعراض", "علامات", "شكل",
+                                 "شكله اي", "بيبان ازاي", "شكله عامل ازاي",
+                                 "ازاي اعرفه", "ازاي اعرف المرض", "بيظهر ازاي")):
         return "symptoms"
 
-    if any(word in q for word in ("cause", "pathogen", "caused by","سبب", "المسبب", "سببه اي","بيجي من اي", "بيظهر من اي", "ليه بيظهر","ايه السبب", "سبب ظهوره","ازاي بينتشر", "بينتقل ازاي")):
+    if any(word in q for word in ("cause", "pathogen", "caused by",
+                                 "سبب", "المسبب", "سببه اي",
+                                 "بيجي من اي", "بيظهر من اي",
+                                 "ليه بيظهر", "ايه السبب", "سبب ظهوره")):
         return "cause"
 
-    if any(word in q for word in ("what is", "define","ما هو", "ايه هو", "ماهي", "يعني ايه","هو اي", "ده اي", "ده ايه")):
+    if any(word in q for word in ("spread", "how does it spread",
+                                 "ينتشر", "بينتشر", "ازاي بينتشر")):
+        return "spread"
+
+    if any(word in q for word in ("conditions", "environment", "favorable",
+                                 "ظروف", "بيظهر امتى")):
+        return "conditions"
+
+    if any(word in q for word in ("what is", "define",
+                                 "ما هو", "ايه هو", "ماهي",
+                                 "يعني ايه", "هو اي", "ده اي", "ده ايه")):
         return "definition"
 
     return "general"
 
+
+
 def _query(question: str, history: Sequence[Dict[str, str]]) -> str:
     recent = [message["content"] for message in history[-4:]]
-    names = _mapped_names("\n".join([*recent, question]))
+    names = _mapped_names("\n".join([*recent, question]), history)
     return "\n".join([*recent, *names, question])
 
 
@@ -356,7 +404,7 @@ def _extra_contexts(contexts: Sequence[Dict[str, Any]], question: str, limit: in
 
 def _local_contexts(question: str, history: Sequence[Dict[str, str]], limit: int) -> List[Dict[str, Any]]:
     query = _norm(_query(question, history))
-    names = [_norm(name) for name in _mapped_names(query)]
+    names = [_norm(name) for name in _mapped_names(query, history)]
     wanted = INTENT_SECTIONS.get(_intent(question), ("overview", "simple explanation", "symptoms"))
     results: List[Tuple[int, Dict[str, Any]]] = []
 
@@ -370,38 +418,40 @@ def _local_contexts(question: str, history: Sequence[Dict[str, str]], limit: int
 
         disease_names = _norm(" ".join([disease, _text(meta.get("disease_name_ar"), 200)]))
         haystack = _norm(" ".join([disease_names, section, text[:500]]))
-        if names and not any(name and (name in disease_names or disease in name) for name in names):
-            continue
-        score = sum(3 for name in names if name and (name in haystack or haystack in name))
+
+        if not any(name in haystack for name in names):
+            if not any(name.split()[0] in haystack for name in names):
+                continue
+
+        score = 0
+        score += sum(3 for name in names if name and name in haystack)
         score += sum(1 for token in query.split() if len(token) > 2 and token in haystack)
         score += 2 if any(word in section for word in wanted) else 0
+
+        if disease and disease in haystack:
+            score += 5
+
         if score:
             results.append((score, {"text": text, "metadata": meta, "score": float(score)}))
 
     results.sort(key=lambda item: item[0], reverse=True)
+
     contexts: List[Dict[str, Any]] = []
     seen_sections = set()
-    seen_diseases = set()
 
     for _, context in results:
         disease = _norm(context["metadata"].get("disease_name"))
         section = _norm(context["metadata"].get("section_title"))
-        if disease in seen_diseases or (disease, section) in seen_sections:
-            continue
-        contexts.append(context)
-        seen_diseases.add(disease)
-        seen_sections.add((disease, section))
-        if len(contexts) >= limit:
-            return contexts
 
-    for _, context in results:
-        key = (_norm(context["metadata"].get("disease_name")), _norm(context["metadata"].get("section_title")))
-        if key in seen_sections:
+        if (disease, section) in seen_sections:
             continue
+
         contexts.append(context)
-        seen_sections.add(key)
+        seen_sections.add((disease, section))
+
         if len(contexts) >= limit:
             break
+
     return contexts
 
 
@@ -430,6 +480,8 @@ def _retrieve(question: str, history: Sequence[Dict[str, str]], top_k: int) -> T
         contexts = [ctx for point in points for ctx in [_point_context(point)] if ctx]
         local = _local_contexts(question, history, top_k)
         contexts = _merge_contexts([*local, *contexts])[:top_k]
+        if not contexts and history:
+            contexts = _local_contexts(history[-1]["content"], history, top_k)  
         return contexts + _extra_contexts(contexts, question), ""
     except Exception as exc:
         logger.warning("Qdrant retrieval failed; using local KB fallback: %s", exc)
@@ -495,9 +547,9 @@ def ask_rag(question: str, top_k: int = 5, history: Optional[Sequence[Dict[str, 
     with TraceSpan("rag_chain", "chain", {"question": question, "top_k": top_k, "history_count": len(clean_history)}) as root:
         with TraceSpan("retrieve_context", "retriever", {"question": question, "top_k": top_k}, root.id) as retriever:
             contexts, retrieval_error = _retrieve(question, clean_history, top_k)
-            retriever.outputs = {"contexts_count": len(contexts), "retrieval_error": retrieval_error}
+            retriever.outputs = {"contexts_count": len(contexts),"retrieval_error": retrieval_error,  "contexts": contexts }
 
-        with TraceSpan("build_prompt", "prompt", {"question": question, "contexts_count": len(contexts)}, root.id) as prompt:
+        with TraceSpan("build_prompt", "prompt", {"question": question, "contexts": contexts}, root.id) as prompt:
             messages = _messages(question, clean_history, contexts)
             prompt.outputs = {"messages_count": len(messages)}
 
