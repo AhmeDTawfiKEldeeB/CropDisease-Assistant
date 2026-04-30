@@ -3,3 +3,4 @@ sentence-transformers==3.0.1
 openai==1.82.0
 langsmith
 rapidfuzz
+langchain-core>=0.1.0

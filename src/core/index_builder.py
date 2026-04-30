@@ -70,6 +70,7 @@ def build_index(data_path: str | None = None, recreate_collection: bool = True) 
             embedding_size=embedding_size,
             do_reset=recreate_collection,
         )
+        provider.ensure_text_index(collection_name=settings.qdrant.collection_name)
 
         texts, payloads, ids = _prepare_records(records)
         if not texts:

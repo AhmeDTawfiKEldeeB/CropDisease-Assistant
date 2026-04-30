@@ -48,11 +48,13 @@ Downy Mildew develops in temperatures between twelve and thirty degrees Celsius 
 Oospores overwinter in soil and infected leaf litter. Spring rains trigger oospore germination, producing macrosporangia that release zoospores capable of infecting leaves through stomata. Primary infection begins when the ten-ten-ten rule conditions are met. After an incubation of five to eighteen days, oil spots appear and white sporangial growth develops on the leaf underside. Rain and wind disperse new sporangia across the vineyard. Multiple infection cycles occur throughout the season during warm, wet weather. At season end, sexual reproduction between compatible strains produces oospores within infected tissue, which fall with leaves to the soil and survive until the following spring.
 
 
-## Treatment and Management
+## Treatment
 
 Canopy management is the most important cultural practice. Leaf removal and shoot positioning improve air circulation and reduce humidity around clusters, significantly lowering infection risk. Removing leaves around clusters at bloom directly reduces the risk of the most economically damaging cluster infection. Overhead irrigation should be avoided. Leaf litter should be shredded and incorporated at season end to reduce oospore survival. Rows should be oriented to maximize sunlight and airflow.
 
 Variety choice is the most powerful long-term tool. American species and PIWI varieties, which are European-American hybrids bred for disease resistance, carry significant natural resistance. PIWI varieties such as Regent, Johanniter, Bronner, Solaris, Cabernet Blanc, and Soreli can reduce fungicide requirements by fifty to eighty percent compared to susceptible European varieties. Pure Vitis vinifera varieties have no meaningful resistance and require full chemical protection programs.
+
+## Management
 
 Chemical control must use only products specifically labeled for downy mildew and active against oomycetes, because products designed for true fungal diseases will not work. Protectant fungicides including mancozeb, folpet, and copper coat the leaf surface and prevent infection but provide no curative activity. They must be reapplied after significant rain. Systemic fungicides provide penetration into leaf tissue and some curative activity. Phenylamide products such as metalaxyl and mefenoxam have systemic action but resistance is widespread and they must never be used alone, always in premix with a protectant. Carboxylic acid amide products such as dimethomorph, iprovalicarb, and mandipropamid are systemic with excellent anti-sporulation activity and some curative action up to forty-eight hours after infection. Cymoxanil provides curative activity up to twenty-four hours post-infection. The spray program should begin when shoots reach ten centimeters or when the ten-ten-ten trigger is met, whichever comes first. Intervals are seven to ten days in wet weather and fourteen days in dry periods. Systemic fungicides should be prioritized at bloom for maximum protection of flowers. Metalaxyl and mefenoxam should be rotated with CAA products and cymoxanil-containing products, and should always be used only in premix formulations to manage resistance risk.
 
@@ -74,14 +76,4 @@ Monitor shoots daily once they reach five centimeters because the ten-ten-ten tr
 Downy Mildew originated in North America and was introduced to Europe in 1878 with near-catastrophic consequences for the wine industry. Today it is present in all grape-growing regions worldwide. It is most severe in humid continental and maritime climates such as France, Germany, Italy, the eastern United States, and China. In dry Mediterranean climates it causes less pressure but can still produce severe losses in wet years. It is also damaging in South America, South Africa, and Australia.
 
 
-## Frequently Asked Questions
 
-I see white growth on the underside of leaves. Is that Downy Mildew or Powdery Mildew? White downy growth on the underside of leaves beneath yellow oil spots is Downy Mildew. White powdery growth on the upper surface of leaves is Powdery Mildew. They require completely different fungicides, so correct identification is essential.
-
-Can I use the same fungicides for both diseases? Not necessarily. Downy Mildew requires oomycete-specific products such as mancozeb, copper, metalaxyl, cymoxanil, and mandipropamid. Powdery Mildew requires DMIs, strobilurins, or sulfur. Some premix products cover both. Always read the label.
-
-The weather was dry for two weeks and disease still appeared. How? Oospores in the soil germinate with the first significant rain, even after a long dry period. One overnight rain after weeks of dry weather can trigger a primary infection event if the ten-ten-ten conditions are otherwise met.
-
-Metalaxyl stopped working in my vineyard. What happened? Metalaxyl resistance in Plasmopara viticola is widespread globally. Never use metalaxyl alone. Always use it in premix with mancozeb or copper and rotate with cymoxanil, mandipropamid, or dimethomorph.
-
-Can I make wine from grapes affected by Downy Mildew? Grapes with leather rot produce off-flavors and abnormal fermentation. Heavily infected lots should not be vinified. Lightly affected clusters can sometimes be processed after removing diseased portions.

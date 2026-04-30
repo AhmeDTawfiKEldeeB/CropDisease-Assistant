@@ -44,7 +44,7 @@ export default function AssistantPage() {
           content: m.text,
         }));
 
-      const data = await sendChatMessage(question, 5, history);
+      const data = await sendChatMessage(question, 3);
 
       const aiMsg = {
         id: nextId++,

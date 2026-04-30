@@ -42,11 +42,13 @@ Gray Leaf Spot thrives in temperatures between twenty-two and thirty degrees Cel
 The cycle begins with the fungus surviving the winter in corn residue on the soil surface. When warm, humid spring conditions arrive, conidia are produced on the residue and wind carries them to the lower leaves of young corn plants. Infection occurs during extended leaf wetness periods. Lesions develop and begin producing new conidia within fourteen to twenty-one days. The disease progresses upward through the canopy through repeated infection cycles driven by wind-dispersed spores and overnight dew. At the end of the season, the fungus returns to residue on the soil surface where it persists until the following season.
 
 
-## Treatment and Management
+## Treatment
 
 The most effective management tool is planting hybrids with high gray leaf spot resistance ratings. Hybrids rated four to seven on a nine-point scale provide meaningful protection, though no completely immune hybrid exists because resistance is polygenic and partial. In no-till fields with a history of severe disease, selecting resistant hybrids is especially important and should be the first management decision.
 
 Cultural practices that reduce residue inoculum are highly valuable. Rotating to a non-host crop such as soybeans or small grains for one to two seasons allows residue to break down and substantially reduces the inoculum load. Tillage that buries residue reduces primary inoculum but must be weighed against erosion concerns. Avoiding excessively dense plant populations reduces canopy humidity. Adequate potassium fertility supports plant tolerance. Planting early allows the canopy to senesce before the worst humidity periods of late summer.
+
+## Management
 
 Fungicide applications are economically justified when disease reaches the ear leaf by tasseling in susceptible hybrids. The optimal timing is at VT to R1, meaning at tasseling through silking. Strobilurins such as azoxystrobin and pyraclostrobin provide good protectant activity. Triazoles such as propiconazole and tebuconazole offer systemic and some curative activity. SDHI products such as fluxapyroxad are excellent and are most effective when used in premix combinations with triazoles or strobilurins. One application at the correct timing is usually sufficient. A second application at R2 may be justified in severe epidemic years on highly susceptible hybrids. Applying after the R4 dough stage has negligible economic return. Fungicide modes of action should be rotated to reduce resistance development.
 
@@ -68,14 +70,3 @@ Begin scouting at V10 and intensify from V14 through tasseling. Sample a minimum
 Gray Leaf Spot is a major disease in the Americas, particularly in the US Corn Belt and in Brazil and Argentina. It is also a significant problem in sub-Saharan Africa, especially in highland tropical maize production, and in parts of Asia including India and China. The disease is most destructive in warm, humid highland environments and in no-till production systems wherever corn is grown.
 
 
-## Frequently Asked Questions
-
-Can Gray Leaf Spot kill my corn plants? Not directly. But severe defoliation before grain fill causes ears to develop poorly, and infected plants become highly prone to stalk rot, which causes lodging before or during harvest.
-
-Is one fungicide application enough? In most years yes, one well-timed application at VT to R1 provides sufficient protection through grain fill. A second application at R2 may be warranted in severe epidemic years with highly susceptible hybrids.
-
-The disease only appeared on the bottom two leaves. Should I spray? Lower leaf infection alone rarely justifies a spray. Spray when disease reaches the ear leaf approaching or at tasseling.
-
-Can I distinguish Gray Leaf Spot from Northern Corn Leaf Blight? Yes. Gray Leaf Spot lesions are rectangular, gray, and confined between veins, usually less than six centimeters long. Northern Corn Leaf Blight lesions are large, five to fifteen centimeters, cigar-shaped, tan, and not restricted by veins.
-
-Does nitrogen fertilization affect severity? Moderate, balanced nitrogen is beneficial. Both deficiency and excess can increase susceptibility. Adequate potassium is the most important nutrient for disease tolerance.

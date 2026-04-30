@@ -46,19 +46,24 @@ class QdrantDBProvider:
 
 
 
-    def create_collection(self, collection_name: str, embedding_size : int, do_reset: bool = False):    
+    def create_collection(self, collection_name: str, embedding_size: int, do_reset: bool = False):    
         if self.is_collection_existed(collection_name):
             if do_reset:
                 self.delete_collection(collection_name)
             else:
                 self.logger.warning(f"Collection {collection_name} already exists. Use do_reset=True to reset it.")
                 return True
-        if  not self.is_collection_existed(collection_name):
+        if not self.is_collection_existed(collection_name):
             self.client.recreate_collection(
                 collection_name=collection_name,
-                vectors_config=models.VectorParams(size=embedding_size, distance=models.Distance.COSINE)
-                    
-            )   
+                vectors_config=models.VectorParams(
+                    size=embedding_size, 
+                    distance=models.Distance.COSINE,
+                ),
+            )
+
+    def ensure_text_index(self, collection_name: str):
+        pass
     
 
 
@@ -148,4 +153,32 @@ class QdrantDBProvider:
             query=vector,
             limit=limit
         )
+        return response.points
+
+
+    def hybrid_search(
+        self,
+        collection_name: str,
+        query_text: str,
+        dense_vector: list,
+        limit: int,
+    ):
+        try:
+            sparse = self.client.create_sparse_vector(query_text)
+            response = self.client.query_points(
+                collection_name=collection_name,
+                query=[
+                    models.NamedVector(name="dense", vector=dense_vector),
+                    models.NamedSparseVector(name="sparse", **sparse),
+                ],
+                using=["dense", "sparse"],
+                limit=limit,
+            )
+        except Exception as e:
+            self.logger.warning(f"Hybrid search failed, falling back to dense-only: {e}")
+            response = self.client.query_points(
+                collection_name=collection_name,
+                query=dense_vector,
+                limit=limit,
+            )
         return response.points

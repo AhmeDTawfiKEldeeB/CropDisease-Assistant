@@ -48,7 +48,7 @@ Hot temperatures between twenty-seven and thirty-eight degrees Celsius dramatica
 Overwintering adult females emerge from soil and debris in spring when temperatures exceed twelve to fifteen degrees Celsius. They begin laying eggs on leaf undersides immediately. Eggs hatch within three to five days at warm temperatures. Larvae feed and develop through two nymphal stages to reach adulthood within seven to fourteen days at twenty-seven degrees Celsius. Adults mate and females begin laying new eggs within hours of reaching maturity. As populations become dense, mites produce silk and disperse by ballooning on air currents to new plants. In late season and autumn, mated females develop the reddish-orange winter coloration and move to overwintering sites in soil, bark crevices, and plant debris.
 
 
-## Treatment and Management
+## Treatment
 
 Maintaining consistent, adequate irrigation is one of the most important cultural practices for spider mite management because drought-stressed plants are far more susceptible and recover more slowly from feeding damage. Well-watered plants show greater tolerance and support faster recovery after mite populations are brought under control.
 
@@ -57,6 +57,8 @@ Preserving natural enemies is the single most important practice for long-term s
 Controlling weeds around field margins removes the reservoir populations that supply mites to the crop throughout the season. Removing the most heavily infested plant material reduces the population load. Reflective silver mulches on the soil surface disorient and deter mite colonization of plants.
 
 Biological control using predatory mites is the preferred approach in integrated pest management programs. Phytoseiulus persimilis is a highly effective specialist predator of spider mites that requires spider mite prey to survive. Neoseiulus californicus is more heat-tolerant and can persist at lower prey densities, making it better for preventive releases. Amblyseius andersoni is very heat-tolerant and performs well in summer conditions. Combining Phytoseiulus persimilis for fast knockdown with Neoseiulus californicus for persistence provides the best results. Releases should be made at the first sign of infestation and no miticides should be applied after release for a minimum of four to six weeks.
+
+## Management
 
 Chemical control requires miticides or acaricides specifically labeled for spider mites. Standard insecticides must not be used. Abamectin is highly effective and works as a neurotoxin but has limited ovicidal activity. Spiromesifen has excellent activity against eggs and larvae but no adult knockdown and must be applied when eggs and juveniles are present. Etoxazole and hexythiazox are mite growth inhibitors effective against eggs and larvae but not adults and must be used early in the infestation. Fenpyroximate provides fast adult knockdown but no ovicidal activity. Bifenazate has good adult knockdown. These chemistries must be rotated with every application using the IRAC resistance group numbers as a guide because resistance develops extremely rapidly in spider mite populations. Two sequential applications five to seven days apart are needed to catch eggs hatching after the first treatment. Thorough coverage of leaf undersides is mandatory because that is where mites live and feed and top-only spraying is ineffective. Horticultural oil and insecticidal soap are contact killers that suffocate mites and eggs on direct contact, require excellent coverage, and are suitable for organic programs. They have no residual activity.
 
@@ -76,16 +78,3 @@ Scout weekly from transplanting and increase to twice weekly during hot, dry wea
 Spider mites are present globally on every continent where crops are grown. They are a major pest in Mediterranean Europe, the Middle East, North Africa, the United States, Latin America, and Southeast Asia. They are a year-round problem in tropical and subtropical regions and a seasonal summer problem in temperate climates. In greenhouses, populations are present year-round regardless of outdoor climate.
 
 
-## Frequently Asked Questions
-
-I sprayed insecticide but the mite problem got worse. Why? Insecticides kill the predatory insects that control mites. Spider mites are arachnids, not insects, and most insecticides have little effect on them while eliminating their natural enemies. Use miticides, not insecticides.
-
-How do I check if I have spider mites? Use a ten-times hand lens and examine the leaf underside for tiny moving dots, eggs, and feeding marks. Alternatively, hold a leaf over white paper and tap sharply. Mites fall onto the paper and can be seen moving as tiny specks.
-
-The webbing is everywhere. Is it too late? Heavy webbing means a serious established infestation. Apply a miticide with thorough underside coverage immediately and remove and destroy the most heavily infested plants to reduce the overall population load.
-
-Can spider mites spread to other crops in my farm? Yes. They spread by wind, on clothing, on tools, and by walking between nearby plants. Check all crops in and around the affected area immediately.
-
-Do spider mites survive winter? Adult females overwinter in soil, plant debris, and weeds. Remove crop debris and control weeds to reduce overwintering populations.
-
-Will rain or overhead irrigation help get rid of mites? Yes. Rain physically knocks mites off leaves and raises humidity, which slows reproduction and favors natural enemies. This is why mites are primarily a dry-season problem. Overhead misting in greenhouses can help but must be balanced against disease risk from wet foliage.

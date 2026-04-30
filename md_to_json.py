@@ -10,6 +10,7 @@ LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]*\)")
 INLINE_CODE_RE = re.compile(r"`([^`]*)`")
 EMPHASIS_RE = re.compile(r"\*\*(.*?)\*\*|__(.*?)__|\*(.*?)\*|_(.*?)_")
 TABLE_SEPARATOR_RE = re.compile(r"^\s*\|?\s*[-:]+(?:\s*\|\s*[-:]+)+\s*\|?\s*$")
+SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
 
 
 def _strip_inline_markdown(text: str) -> str:
@@ -213,7 +214,53 @@ def _extract_synonyms(md_text: str, disease_base: str, pathogen: str) -> List[st
     return synonyms
 
 
-def parse_markdown(md_text: str, file_name: str) -> List[Dict[str, object]]:
+def _chunk_text(text: str, max_chars: int, min_chars: int) -> List[str]:
+    if len(text) <= max_chars:
+        return [text]
+
+    sentences = [s.strip() for s in SENTENCE_SPLIT_RE.split(text) if s.strip()]
+    if not sentences:
+        return [text]
+
+    chunks: List[str] = []
+    current: List[str] = []
+    current_len = 0
+
+    def flush_current() -> None:
+        nonlocal current, current_len
+        if current:
+            chunks.append(" ".join(current).strip())
+            current = []
+            current_len = 0
+
+    for sentence in sentences:
+        sentence_len = len(sentence)
+        if sentence_len >= max_chars:
+            flush_current()
+            # Hard split very long sentences.
+            for i in range(0, sentence_len, max_chars):
+                chunk = sentence[i:i + max_chars].strip()
+                if chunk:
+                    chunks.append(chunk)
+            continue
+
+        if current_len + sentence_len + (1 if current else 0) > max_chars:
+            flush_current()
+
+        current.append(sentence)
+        current_len += sentence_len + (1 if current_len else 0)
+
+    flush_current()
+
+    # Merge tiny tail chunk if needed.
+    if len(chunks) >= 2 and len(chunks[-1]) < min_chars:
+        chunks[-2] = (chunks[-2] + " " + chunks[-1]).strip()
+        chunks.pop()
+
+    return chunks
+
+
+def parse_markdown(md_text: str, file_name: str, chunk_size: int, chunk_min: int) -> List[Dict[str, object]]:
     lines = md_text.splitlines()
     doc_title = ""
 
@@ -244,20 +291,25 @@ def parse_markdown(md_text: str, file_name: str) -> List[Dict[str, object]]:
             buffer = []
             return
 
-        records.append(
-            {
-                "text": text_block,
-                "metadata": {
-                    "disease_name": disease_name,
-                    "disease_base": disease_base,
-                    "plant": plant,
-                    "section": _section_key(current_section),
-                    "pathogen": pathogen,
-                    "type": disease_type,
-                    "synonyms": synonyms,
-                },
-            }
-        )
+        chunks = _chunk_text(text_block, chunk_size, chunk_min)
+        total_chunks = len(chunks)
+        for idx, chunk in enumerate(chunks, start=1):
+            records.append(
+                {
+                    "text": chunk,
+                    "metadata": {
+                        "disease_name": disease_name,
+                        "disease_base": disease_base,
+                        "plant": plant,
+                        "section": _section_key(current_section),
+                        "pathogen": pathogen,
+                        "type": disease_type,
+                        "synonyms": synonyms,
+                        "chunk_index": idx,
+                        "chunk_total": total_chunks,
+                    },
+                }
+            )
         buffer = []
 
     for line in lines:
@@ -276,7 +328,7 @@ def parse_markdown(md_text: str, file_name: str) -> List[Dict[str, object]]:
     return records
 
 
-def convert_markdown_folder(input_dir: Path) -> List[Dict[str, object]]:
+def convert_markdown_folder(input_dir: Path, chunk_size: int, chunk_min: int) -> List[Dict[str, object]]:
     all_records: List[Dict[str, object]] = []
 
     for md_file in sorted(input_dir.glob("*.md")):
@@ -285,7 +337,7 @@ def convert_markdown_folder(input_dir: Path) -> List[Dict[str, object]]:
 
         md_text = md_file.read_text(encoding="utf-8")
         fallback_name = md_file.stem.replace("_", " ").title()
-        records = parse_markdown(md_text, fallback_name)
+        records = parse_markdown(md_text, fallback_name, chunk_size, chunk_min)
         all_records.extend(records)
 
     return all_records
@@ -307,6 +359,18 @@ def main() -> None:
         default="diseases_from_md.json",
         help="Output JSON file path (default: diseases_from_md.json)",
     )
+    parser.add_argument(
+        "--chunk-size",
+        type=int,
+        default=900,
+        help="Maximum characters per chunk (default: 900)",
+    )
+    parser.add_argument(
+        "--chunk-min",
+        type=int,
+        default=200,
+        help="Minimum characters for last chunk before merge (default: 200)",
+    )
     args = parser.parse_args()
 
     input_dir = Path(args.input_dir)
@@ -315,7 +379,7 @@ def main() -> None:
     if not input_dir.exists() or not input_dir.is_dir():
         raise FileNotFoundError(f"Input folder not found: {input_dir}")
 
-    all_records = convert_markdown_folder(input_dir)
+    all_records = convert_markdown_folder(input_dir, args.chunk_size, args.chunk_min)
 
     output_path = Path(args.output)
     if not output_path.is_absolute():

@@ -14,7 +14,7 @@ class QdrantSettings(BaseModel):
 
 class HuggingFaceSettings(BaseModel):
     model_name: str = Field(
-        default="sentence-transformers/all-MiniLM-L6-v2",
+        default="intfloat/multilingual-e5-large-instruct",
         description="Multilingual embedding model"
     )
     model_dimensions: int = Field(default=384, description="Dimensionality of the model's output embeddings")
@@ -30,7 +30,9 @@ class GroqSettings(BaseModel):
 
 class LangSmithSettings(BaseModel):
     api_key: str = Field(default="", description="LangSmith API key")
-    tracing: bool = Field(default=False, description="Enable LangSmith tracing")
+    tracing: bool = Field(default=True, description="Enable LangSmith tracing")
+    endpoint: str = Field(default="https://api.smith.langchain.com", description="LangSmith endpoint")
+    project: str = Field(default="CropDisease", description="LangSmith project name")
 
 
 class Settings(BaseSettings):

@@ -48,11 +48,13 @@ Black Rot thrives in temperatures between ten and thirty-two degrees Celsius, wi
 The cycle begins with the fungus overwintering inside mummified berries and infected canes. Spring rains trigger the release of ascospores, which infect young tissue during wet periods. After an incubation of eight to twenty-five days, lesions form on leaves and shoots. Pycnidia within these lesions release conidia that spread through wind and rain for secondary infections throughout the season. Berries become infected primarily during the critical post-bloom window. Infected berries mummify and either remain on the vine or fall to the ground, carrying the fungus into the next season.
 
 
-## Treatment and Management
+## Treatment
 
 Cultural management begins with the removal and destruction of all mummified berries during dormant pruning. This single action has the greatest impact on reducing next season's inoculum. Infected canes should also be removed. Canopy airflow should be improved through shoot positioning, leaf removal, and proper training systems to reduce humidity and accelerate drying after rain. Overhead irrigation should be avoided, and fallen leaf material should be cleared from the vineyard floor after harvest.
 
 Variety selection plays a significant role. American grape varieties such as Concord and Niagara have moderate natural resistance, while most European Vitis vinifera varieties including Chardonnay, Merlot, and Cabernet Sauvignon are highly susceptible. Disease-resistant hybrid varieties such as Marquette and Frontenac offer good to excellent resistance and are valuable where variety flexibility exists.
+
+## Management
 
 Chemical control should begin at budbreak with a protectant fungicide and continue on a seven-day interval from bloom through four weeks post-bloom. This is the most critical spray window and should not be skipped. After the critical window, intervals can extend to ten to fourteen days in dry weather. Fungicide classes used include multi-site protectants such as mancozeb and captan, systemic triazoles such as myclobutanil and tebuconazole, strobilurins such as azoxystrobin, and SDHI products such as boscalid. Modes of action must be rotated every two to three sprays to prevent fungicide resistance. Strobilurins should never be used alone and should always be mixed with a protectant. In organic programs, copper-based fungicides and captan are the primary options and must be applied on tight schedules given their purely protective activity.
 
@@ -72,14 +74,3 @@ Scout weekly from budbreak through six weeks post-bloom. Focus inspection on ber
 Black Rot is most severe in humid continental climates, particularly in the eastern United States and central Europe. It is present wherever grapevines are grown commercially but causes less damage in dry Mediterranean and Pacific Coast climates where warm, wet spring conditions are less common.
 
 
-## Frequently Asked Questions
-
-My berries turned black and shriveled. Is this definitely Black Rot? Hard, mummified black berries are the hallmark of Black Rot. Botrytis also causes berry rot but produces soft, gray fuzzy berries, not hard black mummies. If berries are hard and black, it is almost certainly Black Rot.
-
-I missed the critical spray window. Is it too late? If berries are already mummifying, you cannot reverse the damage. Focus on removing infected clusters to reduce further sporulation and prepare aggressively for next season.
-
-Do I need to spray if the weather has been dry? Black Rot needs at least four hours of leaf wetness to infect. In dry weather the risk drops significantly. Monitor weather and spray before rain events during the critical window.
-
-How do I stop it from coming back next year? Remove all mummified berries and infected canes during dormant pruning. This is the single most important action. Combine it with early-season fungicide timing for comprehensive protection.
-
-Can Black Rot infect through wounds? Yes. Wounds from hail, bird damage, or mechanical harvesting create additional entry points. After hail events, apply a fungicide within twenty-four hours.

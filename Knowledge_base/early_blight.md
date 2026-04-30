@@ -46,11 +46,13 @@ Early Blight thrives in temperatures between twenty-four and twenty-nine degrees
 The cycle begins with the fungus overwintering in infected plant debris in the soil and on infected seed tubers. When warm, humid conditions arrive in the growing season, conidia are released from debris and dispersed by wind and rain splash. Infection occurs through stomata or directly through weakened cuticle on older tissue. After an incubation of two to seven days, new lesions form and immediately begin producing fresh conidia. Multiple cycles repeat throughout the season. At the end of the season, infected debris falls to the soil and perpetuates the cycle, while infected tubers can also carry the pathogen into the next season and into storage.
 
 
-## Treatment and Management
+## Treatment
 
 Plant nutrition management is the most critical non-chemical tool for Early Blight. Maintaining adequate nitrogen throughout the season is essential because nitrogen-deficient plants develop far more severe disease under the same inoculum levels as well-fertilized plants. Potassium adequacy also supports disease tolerance. Consistent irrigation to prevent drought stress is equally important, and drip irrigation is preferred over overhead systems to keep foliage dry.
 
 Crop rotation away from potato, tomato, and other solanaceous hosts for two to three seasons reduces debris inoculum in the soil. Certified disease-free seed tubers should always be used. Removing infected plant debris after harvest and early haulm destruction before harvest reduce tuber infection pressure.
+
+## Management
 
 Fungicide applications should begin when disease first appears or when conditions consistently favor infection, which means warm temperatures combined with humid nights. Applications every seven to ten days are typical, increasing to every five to seven days during wet, warm periods. Multi-site protectants such as chlorothalonil and mancozeb are applied preventively. Systemic fungicides including strobilurins such as azoxystrobin and pyraclostrobin, triazoles such as difenoconazole and tebuconazole, and SDHI products provide both preventive and curative activity and are valuable when disease is already present. Modes of action must be rotated with every two applications because strobilurin resistance in Alternaria populations is increasingly documented. Thorough coverage of lower canopy leaves is important because this is where the disease initiates.
 
@@ -72,14 +74,3 @@ Begin scouting at canopy closure and intensify mid-season. Sample twenty to thir
 Early Blight is present globally wherever potato and tomato are grown. It is most severe in warm, humid continental and subtropical climates. In temperate regions it is a mid to late season disease. In tropical production regions it operates as a year-round problem. It is consistently among the most common foliar diseases reported by potato growers worldwide.
 
 
-## Frequently Asked Questions
-
-How is Potato Early Blight different from Late Blight? Early Blight produces bullseye spots with concentric rings, starts on old lower leaves, and spreads over weeks with no white mold on the leaf underside. Late Blight produces irregular water-soaked spots with white mold on the leaf underside, spreads in days, and can collapse an entire field in one to two weeks. Late Blight is an emergency requiring immediate action.
-
-My nitrogen is good but I still have Early Blight. Why? Nitrogen is one factor. Other stresses including drought, compacted soil, heavy crop load, and potassium deficiency also increase susceptibility. Evaluate overall plant health comprehensively.
-
-Do tubers from infected plants store well? Tubers with Early Blight lesions are more vulnerable to secondary rots in storage. Harvest at proper maturity, cure at twelve to fifteen degrees Celsius for two weeks, and store in cool, dry, well-ventilated conditions.
-
-Can Early Blight spread from potatoes to my tomatoes? Yes. Alternaria solani infects both crops. Avoid planting potatoes and tomatoes adjacent to each other and manage both under the same disease program.
-
-The fungicide I used stopped working. Why? Strobilurin resistance in Alternaria is increasingly common. Switch to or rotate with a multi-site protectant such as mancozeb or chlorothalonil, or use a triazole fungicide from a different mode of action group.

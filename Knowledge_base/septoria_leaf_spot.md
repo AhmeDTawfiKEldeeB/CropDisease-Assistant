@@ -46,9 +46,11 @@ Septoria Leaf Spot thrives in temperatures between twenty and twenty-five degree
 The cycle begins with pycnidia in infected plant debris overwintering in the soil. When rain or irrigation wets the debris, pycnidia release spores that are splashed onto lower leaves. Spores penetrate through stomata during wet periods. After five to ten days, new lesions form with new pycnidia inside them. Repeated rain events splash spores progressively higher into the canopy. Workers and tools spread spores laterally between plants. At season end, infected debris falls to the soil and pycnidia persist there for one to two seasons, ready to initiate the next season's epidemic.
 
 
-## Treatment and Management
+## Treatment
 
 Crop rotation away from tomato, eggplant, and solanaceous hosts for two or more seasons is the most effective long-term cultural tool because it allows pycnidia in the soil debris to degrade and substantially reduces the inoculum load for subsequent tomato crops. Organic mulch applied around the base of plants physically prevents rain splash from soil to lower leaves and is one of the most cost-effective early-season preventive measures available. Switching from overhead to drip irrigation eliminates the main driver of spore splash within the field and can dramatically slow disease progression on its own. Removing and destroying infected lower leaves as the disease progresses reduces the inoculum load in the canopy and improves airflow. Staking and training plants improves airflow through the canopy. Workers should avoid moving through fields when foliage is wet. All plant debris should be thoroughly removed and composted or buried after harvest.
+
+## Management
 
 Fungicide applications should begin when first symptoms appear or when weather consistently favors infection. Multi-site protectants including chlorothalonil and mancozeb provide no curative activity and must be applied preventively every seven to ten days. Copper-based products are effective and approved for organic use. Strobilurins such as azoxystrobin and pyraclostrobin provide protectant and some curative activity. Triazoles such as difenoconazole and propiconazole are systemic with curative activity within forty-eight to seventy-two hours of infection. SDHI products such as boscalid can be used in premix formulations. Applications every seven to ten days are typical, increasing to every five to seven days during wet weather. Thorough coverage of lower canopy leaves is important because this is where the disease initiates. Modes of action should be rotated with every two applications because strobilurin resistance in Septoria populations has been reported in some regions.
 
@@ -70,14 +72,3 @@ Begin scouting at fruit set because the disease rarely appears before that stage
 Septoria Leaf Spot is present wherever tomatoes are grown in humid conditions. It is most severe in the eastern United States, northern and eastern Europe, parts of Latin America and the Caribbean, and South and Southeast Asia. It is less common in arid or semi-arid climates with little summer rainfall.
 
 
-## Frequently Asked Questions
-
-How do I tell Septoria from Early Blight? Septoria produces many tiny spots between one and four millimeters with a gray center, a dark border, and tiny black dots inside the center. Early Blight produces fewer but larger spots between five and fifteen millimeters with concentric rings in a bullseye pattern and a yellow halo. The tiny black pycnidia inside Septoria lesions are the definitive distinguishing feature and are not present in Early Blight.
-
-The fruits look fine but leaves are falling off. Should I worry? Yes. Defoliation exposes fruits to direct sunlight causing sunscald, which appears as white or tan bleached patches on fruit. It also weakens the plant's ability to fill and ripen fruit properly. Protecting the upper canopy is critical.
-
-My plants get this every year. How do I break the cycle? Crop rotation is the key intervention. The fungus survives in debris for two or more seasons. Rotate out of tomatoes for at least two years and thoroughly remove all plant debris after each harvest.
-
-Can I use neem oil or organic options effectively? Copper-based sprays are the most effective organic option. Neem oil and Bacillus subtilis have some suppressive effect but are less reliable. Timing, coverage, and frequency are critical with all organic options, and sprays should be applied every five to seven days during wet weather.
-
-Is Septoria Leaf Spot on tomatoes the same as Septoria on wheat? No. Septoria leaf spot on wheat is caused by Zymoseptoria tritici, a completely different fungus. Despite sharing a common genus name in older taxonomy, these are unrelated pathogens and there is no cross-infection between tomato and wheat.

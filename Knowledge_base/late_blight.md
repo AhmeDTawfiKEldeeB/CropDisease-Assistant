@@ -46,9 +46,11 @@ Late Blight thrives in temperatures between ten and twenty-five degrees Celsius 
 Primary inoculum comes from infected tubers overwintering in soil as volunteers, from unharvested cull piles, and from storage facilities. These sources begin sporulating under cool, wet spring conditions. Sporangia are dispersed by wind and rain to potato foliage. Zoospores or directly germinating sporangia infect through stomata and wounds. After an incubation of just two to four days, the plant begins sporulating itself, amplifying the inoculum exponentially. Rain washes sporangia into soil where zoospores infect tubers through lenticels. Infected tubers at harvest carry disease into storage, where it spreads to healthy lots. Where oospores form from sexual reproduction, they survive in soil for years and complicate rotation-based management.
 
 
-## Treatment and Management
+## Treatment
 
 Planting only certified disease-free seed potatoes is the most fundamental preventive measure and is not optional. Infected seed is the most direct way to introduce the disease into a clean field. Resistant varieties with multiple resistance genes, particularly those with quantitative multigenic resistance, significantly reduce epidemic severity and are available through regional variety programs. Even resistant varieties require some fungicide protection in high-pressure seasons. Volunteer potato plants in and around fields serve as green bridges for the pathogen and must be destroyed. Cull piles must be buried deeply or composted far from fields immediately after sorting. Harvest should occur only when haulm is fully dead and tuber skins are fully set to minimize tuber infection during harvest operations.
+
+## Management
 
 Chemical control must use only oomycete-active fungicides. Protectant fungicides including chlorothalonil, mancozeb, and copper coat the tissue surface and prevent infection but have no curative activity. They must be reapplied frequently, especially after rain. Systemic fungicides with curative activity include dimethomorph, fluopicolide, mandipropamid, cymoxanil, and propamocarb. These penetrate tissue and can stop infections in progress for a limited window of twenty-four to forty-eight hours. Metalaxyl and mefenoxam are systemic but resistance is extremely common worldwide and they should never be used as solo products, only in premix with a contact fungicide. The spray program should begin preventively using forecasting criteria, not after symptoms appear. During high-risk weather, applications every five to seven days are required. An example rotation would cycle through mancozeb alone, then mandipropamid plus mancozeb, then chlorothalonil alone, then cymoxanil plus mancozeb, then fluopicolide plus propamocarb, repeating without ever using the same mode of action in consecutive applications.
 
@@ -72,14 +74,4 @@ Scout fields twice weekly from canopy closure through harvest during high-risk s
 Late Blight is present on every continent where potatoes are grown. It is most severe in cool, wet climates including Ireland, the United Kingdom, northern Europe, the Pacific Northwest of the United States, the Andes region where the pathogen originated, and highland Africa. New, more aggressive genetic lineages including US-8 and several EU lineages have spread globally since the 1990s and have complicated resistance management in many regions.
 
 
-## Frequently Asked Questions
 
-How do I tell Late Blight from Early Blight on potato? Late Blight produces irregular water-soaked spots with white mold on the leaf underside, spreads in days, and can collapse a whole field in one to two weeks. Early Blight produces bullseye circular spots with rings, starts on old lower leaves, spreads over weeks, and has no white mold. Late Blight is always an emergency requiring immediate action.
-
-I used metalaxyl and it did not work. Why? Metalaxyl and mefenoxam resistance is extremely common worldwide. Switch immediately to mandipropamid, fluopicolide plus propamocarb, or dimethomorph, and never use metalaxyl alone.
-
-My stored potatoes are rotting. Is this Late Blight? Possibly. Late Blight tubers show firm reddish-brown dry rot progressing into the flesh. If you also see watery soft rot and a strong odor, bacteria have entered through the Late Blight lesions. Remove all affected tubers immediately and improve ventilation.
-
-Can Late Blight spread from potato to tomato? Yes. Phytophthora infestans infects both crops. If you grow both, an outbreak in one means the other is at immediate risk. Manage both simultaneously and keep them separated where possible.
-
-How long does the pathogen survive in soil? As oospores from sexual reproduction it can survive for several years. Regular rotation, elimination of volunteers, and destruction of cull piles are essential for long-term management.

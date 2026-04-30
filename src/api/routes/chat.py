@@ -3,7 +3,7 @@ import re
 from fastapi import APIRouter, HTTPException
 
 from src.api.schemas import ChatRequest, ChatResponse
-from src.generation import ask_rag, ask_llm
+from src.services.tracing import ask_rag, ask_llm
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["chat"])
@@ -23,7 +23,7 @@ def clean_text(text: str) -> str:
 @router.post("/chat", response_model=ChatResponse)
 async def chat_rag(body: ChatRequest):
     try:
-        result = ask_rag(question=body.question, top_k=body.top_k, history=body.history)
+        result = ask_rag(question=body.question, top_k=5)
         answer = clean_text(result.get("answer", ""))
         return ChatResponse(
             answer=answer,

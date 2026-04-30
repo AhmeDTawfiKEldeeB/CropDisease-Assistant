@@ -42,11 +42,13 @@ Common Rust thrives in cool temperatures between sixteen and twenty-three degree
 Each season in temperate regions, urediospores arrive via wind from southern or tropical areas. They land on corn leaves, germinate in moisture, and penetrate through stomata. Pustules develop within seven to fourteen days and release new urediospores. Multiple infection cycles repeat throughout the season, each cycle seven to ten days long. Late in the season, dark teliospores form within pustules. In regions where both A1 and A2 mating types coexist, sexual recombination on the Oxalis alternate host generates new races capable of overcoming host resistance genes.
 
 
-## Treatment and Management
+## Treatment
 
 The most effective management strategy is planting hybrids with strong rust resistance ratings. Hybrids rated six or above on a nine-point scale tolerate substantial rust pressure without significant yield loss. Quantitative or partial resistance, which is controlled by multiple genes, is more durable than single-gene resistance because it is harder for new fungal races to overcome completely.
 
 Cultural practices have limited value against Common Rust because inoculum arrives from wind rather than from local fields. Planting early allows the crop to pass through the most susceptible vegetative stages before peak inoculum arrives. Removing volunteer corn plants reduces early-season infection sources. Balanced nutrition, particularly adequate phosphorus and potassium, supports plant tolerance.
+
+## Management
 
 Fungicide applications are economically justified on susceptible hybrids and sweet corn when disease reaches the ear leaf or above at or before tasseling. Effective fungicide classes include triazoles such as propiconazole and tebuconazole, strobilurins such as azoxystrobin and pyraclostrobin, and premix products combining SDHI and triazole chemistries. The optimal timing is between the VT and R1 growth stages. A single well-timed application is usually sufficient. On sweet corn the threshold is much lower and fungicide should be applied as soon as rust appears before or at tasseling. Applications after the R3 milk stage have very limited economic return on field corn. Modes of action should be alternated to reduce resistance risk.
 
@@ -68,14 +70,4 @@ Begin scouting at the V8 growth stage and intensify from V10 through R2. Sample 
 Common Rust is present globally wherever corn is grown. It is most severe in tropical highlands such as East Africa, Central America, and the Andean region of South America. In temperate regions of North America and Europe, severity varies year to year depending on how early inoculum arrives from southern source regions and whether cool, humid weather follows. Late-planted fields and high-elevation areas within any region are at the greatest risk.
 
 
-## Frequently Asked Questions
 
-Is Common Rust the same as Southern Rust? No. Southern Rust is caused by Puccinia polysora and is more aggressive. Common Rust pustules appear on both leaf surfaces while Southern Rust pustules are mostly on the upper surface. Southern Rust pustules are also more orange in color and smaller in size.
-
-The rust appeared suddenly overnight. Is that normal? Yes. Wind-carried spores can arrive in large numbers overnight, and cool, dewy nights cause rapid infection. What looks like a sudden outbreak is often the visible result of infections that occurred seven to fourteen days earlier.
-
-My field was rotated away from corn. Why do I still have rust? Because Common Rust inoculum comes from wind, not from local soil or residue. Rotation does not protect against this disease.
-
-Can Common Rust cause stalk rot? Indirectly. Severe rust reduces photosynthesis and forces the plant to remobilize stalk carbohydrates to fill grain, weakening stalks and increasing susceptibility to Gibberella and Fusarium stalk rots and subsequent lodging.
-
-Does rust affect grain quality or safety? Rust does not produce mycotoxins. It reduces yield and test weight but does not make grain unsafe for food or feed.

@@ -48,13 +48,15 @@ Esca is primarily a disease of mature vines. Vines under five years old are rare
 The cycle begins when airborne spores from infected wood or nursery stock land on fresh pruning wounds. The fungi colonize the wound surface and grow into the woody tissue progressively over months and years. The internal wood decays slowly while the vine continues to function. Eventually the fungal load disrupts vascular function enough to produce external symptoms. In summers with extreme heat, the infected vascular system fails catastrophically, causing apoplexy. Infected pruning stubs in the vineyard continuously produce spores during wet weather throughout the year, infecting adjacent vines season after season.
 
 
-## Treatment and Management
+## Treatment
 
 Because there is no cure once the wood is infected, all management is preventive. The most important practice is protecting pruning wounds immediately after every cut. Wound protectants including thiophanate-methyl fungicide paint and formulations containing Trichoderma harzianum should be applied to every cut surface within hours of pruning. These products colonize the wound and exclude the Esca pathogens before they can establish. Pruning tools must be sterilized between every vine using ten percent bleach solution or seventy percent alcohol. Carrying two pairs of shears and alternating between them while the other soaks in sterilant is a practical method. Pruning during dry weather reduces spore release. Pruning during the coldest part of winter, when fungal activity is lowest, reduces infection risk. Double pruning, which involves a rough cut in autumn followed by the final cut in late winter, minimizes the time wounds are exposed during high-risk periods.
 
 New vineyards should be established only with certified disease-free planting material. Every vine should be inspected at the graft union and a cross-section of the wood should be examined for dark staining before accepting any nursery material.
 
 When infection is discovered early, surgical interventions can extend vine life. Trunk renewal removes the infected trunk entirely and trains a new shoot from the rootstock base. This is effective when disease has not yet reached the roots and typically requires three to five years to restore full production. Curettage involves surgically carving out infected wood from the trunk and sealing the wound with a biological protectant. Removing individual infected arms while the trunk remains is feasible for early or localized infections.
+
+## Management
 
 No systemic fungicide eliminates established infections inside the wood. Chemical treatments are effective only as wound protectants applied immediately at the time of pruning.
 
@@ -73,15 +75,3 @@ Survey the entire vineyard annually in mid-summer, which is July or August in th
 
 Esca is present in all grape-growing regions worldwide. It is most economically damaging in France, Italy, Spain, Portugal, California, and Australia. Incidence in mature vineyards typically ranges from five to thirty percent and can exceed fifty percent in the most affected blocks. The disease became significantly more prevalent in European vineyards after sodium arsenite, a highly effective wood protectant, was banned in 2002.
 
-
-## Frequently Asked Questions
-
-Can I cure a vine that already has Esca? No. Once the wood is infected, no chemical or biological treatment eliminates the fungi from inside the tissue. Management focuses on slowing progression through surgical interventions and protecting healthy vines.
-
-My vine suddenly wilted and died in three days. Is this Esca? This sounds like apoplexy, the acute form of Esca triggered by heat stress in an already-infected vine. Cut the trunk. If you see brown or black wood staining, Esca is confirmed.
-
-How do I know if my pruning tools are spreading the disease? You cannot tell visually. Assume contamination and sterilize between every vine, especially in vineyards with known Esca history.
-
-My vineyard is new. Can I get Esca? Yes, through infected nursery stock. This is why certified disease-free planting material is essential. Always inspect wood cross-sections when accepting new vines.
-
-Does Esca spread from vine to vine through the soil? Not typically. The main spread is through pruning wounds via airborne spores and contaminated tools, not through soil or root contact.

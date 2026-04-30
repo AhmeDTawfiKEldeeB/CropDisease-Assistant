@@ -46,11 +46,13 @@ Target Spot thrives in temperatures between twenty-five and thirty-two degrees C
 The cycle begins with conidia and mycelium surviving in infected plant debris in soil. Conidia are released during wet weather and dispersed by wind and rain splash. The fungus infects tissue of any age through stomata or direct cuticle penetration during humid periods. After five to seven days, new conidia are produced on lesion surfaces and wind and rain carry them throughout the crop. Fruit infection occurs throughout the season when conditions are favorable. At season end, infected debris returns to the soil to initiate the next season's epidemic. Because of the wide host range, conidia from non-tomato hosts in the environment contribute continuously to the inoculum pool.
 
 
-## Treatment and Management
+## Treatment
 
 Crop rotation reduces debris-based inoculum but is less effective than for tomato-specific pathogens because the broad host range means inoculum can originate from many non-tomato sources. Rotating away from cucumbers, soybeans, and other highly susceptible crops is also worthwhile. Removing and destroying infected plant debris after harvest breaks the debris-based inoculum cycle. Improving air circulation through canopy management, pruning, and adequate plant spacing reduces the humidity microclimate favorable to infection. Drip irrigation should replace overhead systems to keep foliage dry. Infected lower leaves should be removed as disease progresses to reduce canopy inoculum. Surrounding crops and weeds should be scouted and managed to reduce alternate host sources of inoculum near the field. Greenhouse structures should be sanitized thoroughly between crops.
 
 Truly resistant commercial tomato varieties are currently limited and active research is ongoing. Check regional variety trial data for tolerance ratings as new varieties become available.
+
+## Management
 
 Fungicide applications should be applied preventively when conditions favor infection or at the appearance of first symptoms. SDHI products including boscalid, fluopyram, and penthiopyrad provide excellent activity and are among the most effective options available. Strobilurins such as azoxystrobin and pyraclostrobin provide good protectant activity but resistance has been reported. Triazoles such as difenoconazole and tebuconazole are systemic with curative activity. Multi-site protectants including chlorothalonil and mancozeb are important components of any program for resistance management. Benzimidazoles such as carbendazim should be avoided or minimized because resistance is documented globally. Application intervals of seven to ten days are typical, shortening to five to seven days during wet weather. Good coverage of the entire plant including fruit clusters and stem tissue is important. Modes of action must be rotated with every application to prevent resistance. A practical rotation would cycle through chlorothalonil, then SDHI plus triazole premix, then strobilurin plus mancozeb, then back to chlorothalonil.
 
@@ -72,14 +74,3 @@ Begin scouting soon after transplanting because Target Spot can appear at any pl
 Target Spot was originally considered a tropical and subtropical disease but has expanded in importance globally, particularly in protected production environments. It is now significant in Southeast Asia, sub-Saharan Africa, the Caribbean and Latin America, the southern United States including Florida and Gulf Coast states, Mediterranean greenhouse production, and northern European greenhouse cucumber and tomato production.
 
 
-## Frequently Asked Questions
-
-How do I tell Target Spot from Early Blight? Target Spot affects leaves of all ages while Early Blight mainly affects old lower leaves. Target Spot also frequently infects fruit with sunken circular lesions while Early Blight rarely infects tomato fruit directly. Both have bullseye ring patterns on leaves, making the leaf age distribution the key practical distinction. Laboratory confirmation may be needed for certainty.
-
-Does it infect other crops? Yes. Corynespora cassiicola has an extremely wide host range including cucumbers, papaya, beans, soybeans, and many ornamentals. Practice good field hygiene between crops and scout for alternate inoculum sources nearby.
-
-Is this disease getting worse over time? Yes. Target Spot has gained importance globally over the past two decades, likely due to a combination of warmer temperatures, expansion of protected production, and possibly increased fungicide resistance in pathogen populations reducing the effectiveness of chemical programs that previously kept it in check.
-
-My fungicide does not seem to be working against Target Spot. What should I do? Resistance to carbendazim and strobilurins is documented in Corynespora cassiicola. Switch to an SDHI-containing product such as boscalid or fluopyram combined with a multi-site protectant such as chlorothalonil or mancozeb. Consult a local plant pathologist if control failures continue.
-
-Does it spread in dry conditions? Spread is much slower in dry conditions because the fungus requires high humidity and leaf wetness for infection. Hot, dry wind can carry conidia over long distances but infection only occurs when humidity rises and leaf surfaces become wet.

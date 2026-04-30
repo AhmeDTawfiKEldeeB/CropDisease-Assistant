@@ -46,11 +46,13 @@ Isariopsis Leaf Spot thrives in temperatures between twenty and thirty degrees C
 The fungus survives winter in infected leaf debris on the vineyard floor. When warm, moist conditions return in spring and early summer, the pathogen produces conidia on the debris that are dispersed by wind and rain splash to leaf undersides. Infection occurs through stomata during humid periods. After an incubation of fourteen to twenty-one days, symptoms develop and new conidia are produced on the underside of infected leaves. Secondary infections continue throughout the growing season. As the season advances into late summer and autumn, the disease intensifies and defoliation accelerates. Infected leaves fall to the ground and replenish the leaf litter inoculum pool for the following season.
 
 
-## Treatment and Management
+## Treatment
 
 Removing and destroying fallen infected leaves after harvest is the single most effective management action for Isariopsis Leaf Spot. Because the disease depends entirely on leaf litter for overwintering, thorough leaf removal from the vineyard floor eliminates the primary inoculum source and directly reduces next season's disease pressure.
 
 Improving canopy airflow through shoot positioning, leaf removal, and appropriate training systems reduces the humidity microclimate that favors the disease. Drip or subsurface irrigation should be used in preference to overhead systems. Balanced fertilization with avoidance of excess nitrogen keeps canopy density manageable.
+
+## Management
 
 This disease is usually managed as a secondary benefit of fungicide programs targeting the more serious diseases of Black Rot and Downy Mildew, because the fungicides used for those diseases, including copper, mancozeb, captan, azoxystrobin, and tebuconazole, are also effective against Pseudocercospora vitis. When Isariopsis Leaf Spot requires a dedicated chemical program, applications of copper or mancozeb every ten to fourteen days during wet periods provide adequate protection. Strobilurins and triazoles can be added when additional systemic activity is needed. Modes of action should be rotated to prevent resistance.
 

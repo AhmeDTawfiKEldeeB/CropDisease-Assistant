@@ -48,7 +48,7 @@ Relative humidity above eighty-five percent is the critical condition for Leaf M
 Conidia survive on greenhouse structures, in plant debris, and in soil between crop cycles. When a new crop is planted and canopy density increases, humidity rises above eighty-five percent and dormant conidia are activated. Air currents distribute spores through the greenhouse to leaf undersides. Conidia germinate and penetrate stomata during humid periods. After ten to fourteen days, new velvety sporulation appears on infected leaves and produces fresh conidia that air currents spread further. The cycle repeats rapidly as long as humidity remains above the threshold. At season end, conidia remain on greenhouse surfaces and in debris to initiate the cycle in the next crop.
 
 
-## Treatment and Management
+## Treatment
 
 Reducing relative humidity below eighty-five percent is the most important and most effective management action. This can be achieved by opening vents and running circulation fans, heating the greenhouse in the morning to reduce overnight condensation, reducing irrigation frequency, and avoiding all overhead or foliar watering. Below eighty-five percent relative humidity, sporulation stops and the disease ceases to spread regardless of inoculum levels, making environmental control more powerful than any chemical option.
 
@@ -57,6 +57,8 @@ Plant spacing should be adequate to allow airflow through the canopy. Infected l
 Between crop cycles, thorough sanitization of the entire greenhouse is essential. All plant material must be completely removed. Surfaces including frames, plastic, stakes, trellises, and irrigation equipment should be washed with detergent to remove organic matter, then treated with bleach at one to ten dilution or quaternary ammonium compounds, and allowed to dry completely for at least one week before the next crop is transplanted.
 
 Resistant varieties carrying Cf resistance genes are available and provide effective protection against specific races of the pathogen. However, resistance is race-specific and breaks down when a new race matching the variety's Cf gene is present. Combining resistant varieties with humidity management provides the most reliable protection.
+
+## Management
 
 Fungicide applications work significantly better when combined with humidity reduction and should not be relied upon as a substitute for environmental control. Effective fungicide classes include multi-site protectants such as chlorothalonil and mancozeb, strobilurins such as azoxystrobin, and triazoles such as difenoconazole. Applications every seven to ten days with thorough coverage of leaf undersides are required in active disease situations. Strobilurin resistance has been reported in some greenhouse populations, so modes of action should be rotated.
 
@@ -78,14 +80,3 @@ Check plants two to three times per week in greenhouses throughout the growing s
 Leaf Mold is primarily a disease of protected tomato production and is most economically significant in major greenhouse tomato regions including the Netherlands, the United Kingdom, Scandinavia, Spain, Italy, Turkey, Japan, South Korea, and greenhouse production areas of North America. Open-field occurrence is limited to warm, humid coastal environments where sustained humidity above eighty-five percent is possible.
 
 
-## Frequently Asked Questions
-
-I only see yellow spots on top of leaves. Is this Leaf Mold? Check the underside of the leaf. If there is an olive-green or gray velvety coating beneath the yellow area, it is Leaf Mold. Yellow spots on top with no mold underneath could be nutrient deficiency, mosaic virus, or another disease.
-
-The velvety mold disappeared but yellow spots remain. Is the disease over? No. The mold disappears when humidity drops below eighty-five percent. The infection remains active inside the leaf tissue and sporulation will return immediately when humidity rises again.
-
-Does Leaf Mold spread from my greenhouse to outdoor tomatoes? It can, but outdoor spread requires consistently high humidity. The disease is primarily a greenhouse problem. Outdoor outbreaks occur mainly in very dense plantings during prolonged wet weather.
-
-My resistant variety still got Leaf Mold. Why? Cf gene resistance is race-specific. If a new race that overcomes your variety's Cf gene is present, resistance breaks down completely. Combining resistant varieties with humidity management is always more reliable than relying on genetics alone.
-
-How do I sanitize my greenhouse between crops? Remove all plant material completely. Wash all surfaces with detergent solution to remove organic matter. Apply bleach at one to ten dilution or quaternary ammonium compounds to all surfaces. Allow to dry completely for at least one week before transplanting the next crop.
