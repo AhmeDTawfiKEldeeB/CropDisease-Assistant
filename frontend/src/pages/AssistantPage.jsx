@@ -158,6 +158,7 @@ export default function AssistantPage() {
       role: "ai",
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       text: `Ask me anything about ${selectedDiseaseLabel} on ${selectedPlantLabel}. I can explain spread, risk, and treatment options.`,
+      animate: true,
     };
     setMessages([intro]);
   }, [selectedDisease, selectedPlant, selectedDiseaseLabel]);
@@ -192,6 +193,7 @@ export default function AssistantPage() {
         time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         text: data.answer || "I couldn't generate a response.",
         warning: data.retrieval_error || undefined,
+        animate: true,
       };
 
       setMessages((prev) => [...prev, aiMsg]);
@@ -367,15 +369,12 @@ export default function AssistantPage() {
 
             <div className="border-t border-surface-variant bg-surface p-4">
               <div className="relative flex items-center">
-                <button className="absolute left-3 text-outline transition hover:text-primary">
-                  <span className="material-symbols-outlined">attach_file</span>
-                </button>
                 <input
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder={`Ask about ${selectedDiseaseLabel}...`}
-                  className="w-full rounded-full border border-outline-variant/40 bg-surface-container px-12 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-full border border-outline-variant/40 bg-surface-container px-5 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button
                   onClick={handleSend}

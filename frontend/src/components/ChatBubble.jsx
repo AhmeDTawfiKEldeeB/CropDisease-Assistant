@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { cn } from "../utils/cn";
 import { useI18n } from "../hooks/useI18n";
 import { detectLanguage } from "../utils/api";
@@ -7,6 +8,36 @@ export default function ChatBubble({ message }) {
   const isUser = message.role === "user";
   const detectedLang = detectLanguage(message.text);
   const isRtl = detectedLang === "ar";
+  const [visibleText, setVisibleText] = useState(message.text || "");
+
+  useEffect(() => {
+    if (isUser || !message.animate) {
+      setVisibleText(message.text || "");
+      return undefined;
+    }
+
+    const fullText = message.text || "";
+    if (!fullText) {
+      setVisibleText("");
+      return undefined;
+    }
+
+    let index = 0;
+    setVisibleText("");
+
+    const totalMs = Math.min(Math.max(fullText.length * 30, 1800), 9750);
+    const intervalMs = Math.max(8, Math.round(totalMs / fullText.length));
+
+    const timer = setInterval(() => {
+      index += 1;
+      setVisibleText(fullText.slice(0, index));
+      if (index >= fullText.length) {
+        clearInterval(timer);
+      }
+    }, intervalMs);
+
+    return () => clearInterval(timer);
+  }, [isUser, message.animate, message.id, message.text]);
 
   return (
     <div className={cn("flex gap-4", isUser ? "justify-end" : "justify-start")}>
@@ -25,7 +56,7 @@ export default function ChatBubble({ message }) {
           )}
         >
           <p className="leading-7 whitespace-pre-wrap" dir={isRtl ? "rtl" : "ltr"}>
-            {message.text}
+            {visibleText}
           </p>
           {message.warning && (
             <div className="mt-4 rounded-xl border border-tertiary/20 bg-tertiary-fixed p-4 text-on-tertiary-fixed-variant">
