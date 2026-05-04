@@ -164,18 +164,13 @@ class QdrantDBProvider:
         limit: int,
     ):
         try:
-            sparse = self.client.create_sparse_vector(query_text)
             response = self.client.query_points(
                 collection_name=collection_name,
-                query=[
-                    models.NamedVector(name="dense", vector=dense_vector),
-                    models.NamedSparseVector(name="sparse", **sparse),
-                ],
-                using=["dense", "sparse"],
+                query=dense_vector,
                 limit=limit,
             )
         except Exception as e:
-            self.logger.warning(f"Hybrid search failed, falling back to dense-only: {e}")
+            self.logger.warning(f"Search failed: {e}")
             response = self.client.query_points(
                 collection_name=collection_name,
                 query=dense_vector,

@@ -7,12 +7,11 @@ import DiagnosisPage from "./pages/DiagnosisPage";
 import AssistantPage from "./pages/AssistantPage";
 import HistoryPage from "./pages/HistoryPage";
 import SettingsPage from "./pages/SettingsPage";
-import { useLocalStorage } from "./hooks/useLocalStorage";
 import { I18nProvider } from "./hooks/useI18n";
 import { translations } from "./data/translations";
 
 export default function App() {
-  const [lang, setLang] = useLocalStorage("florascan_lang", "en");
+  const lang = "en";
   const location = useLocation();
   const isRTL = lang === "ar";
 
@@ -28,10 +27,10 @@ export default function App() {
       theme: "light",
       isRTL,
       t: translations[lang],
-      toggleLang: () => setLang((prev) => (prev === "en" ? "ar" : "en")),
+      toggleLang: () => undefined,
       toggleTheme: () => undefined,
     }),
-    [lang, isRTL, setLang]
+    [lang, isRTL]
   );
 
   return (

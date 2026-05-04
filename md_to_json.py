@@ -148,8 +148,10 @@ def _section_key(section_title: str) -> str:
         "symptoms": "symptoms",
         "favorable_conditions": "favorable_conditions",
         "disease_cycle": "disease_cycle",
+        "treatment": "treatment",
         "treatment_management": "treatment",
         "treatment_and_management": "treatment",
+        "management": "management",
         "quick_actions_what_to_do_right_now": "quick_actions",
         "quick_actions": "quick_actions",
         "scouting_monitoring_guide": "monitoring",
@@ -214,8 +216,37 @@ def _extract_synonyms(md_text: str, disease_base: str, pathogen: str) -> List[st
     return synonyms
 
 
-def _chunk_text(text: str, max_chars: int, min_chars: int) -> List[str]:
-    if len(text) <= max_chars:
+def _split_words_to_chunks(words: List[str], max_words: int, max_chars: int) -> List[str]:
+    chunks: List[str] = []
+    current: List[str] = []
+    current_words = 0
+    current_chars = 0
+
+    def flush_current() -> None:
+        nonlocal current, current_words, current_chars
+        if current:
+            chunks.append(" ".join(current).strip())
+            current = []
+            current_words = 0
+            current_chars = 0
+
+    for word in words:
+        word_len = len(word)
+        sep = 1 if current else 0
+        if current_words + 1 > max_words or current_chars + word_len + sep > max_chars:
+            flush_current()
+
+        current.append(word)
+        current_words += 1
+        current_chars += word_len + (1 if current_chars else 0)
+
+    flush_current()
+    return chunks
+
+
+def _chunk_text(text: str, max_words: int, min_words: int, max_chars: int) -> List[str]:
+    words = text.split()
+    if len(words) <= max_words and len(text) <= max_chars:
         return [text]
 
     sentences = [s.strip() for s in SENTENCE_SPLIT_RE.split(text) if s.strip()]
@@ -224,43 +255,58 @@ def _chunk_text(text: str, max_chars: int, min_chars: int) -> List[str]:
 
     chunks: List[str] = []
     current: List[str] = []
-    current_len = 0
+    current_words = 0
+    current_chars = 0
 
     def flush_current() -> None:
-        nonlocal current, current_len
+        nonlocal current, current_words, current_chars
         if current:
             chunks.append(" ".join(current).strip())
             current = []
-            current_len = 0
+            current_words = 0
+            current_chars = 0
 
     for sentence in sentences:
-        sentence_len = len(sentence)
-        if sentence_len >= max_chars:
+        sentence_words = sentence.split()
+        sentence_words_len = len(sentence_words)
+        sentence_chars = len(sentence)
+
+        if sentence_words_len > max_words or sentence_chars > max_chars:
             flush_current()
-            # Hard split very long sentences.
-            for i in range(0, sentence_len, max_chars):
-                chunk = sentence[i:i + max_chars].strip()
-                if chunk:
-                    chunks.append(chunk)
+            chunks.extend(_split_words_to_chunks(sentence_words, max_words, max_chars))
             continue
 
-        if current_len + sentence_len + (1 if current else 0) > max_chars:
+        sep = 1 if current else 0
+        if (
+            current_words + sentence_words_len > max_words
+            or current_chars + sentence_chars + sep > max_chars
+        ):
             flush_current()
 
         current.append(sentence)
-        current_len += sentence_len + (1 if current_len else 0)
+        current_words += sentence_words_len
+        current_chars += sentence_chars + (1 if current_chars else 0)
 
     flush_current()
 
-    # Merge tiny tail chunk if needed.
-    if len(chunks) >= 2 and len(chunks[-1]) < min_chars:
-        chunks[-2] = (chunks[-2] + " " + chunks[-1]).strip()
-        chunks.pop()
+    # Merge tiny tail chunk if needed, but never exceed max_chars.
+    if len(chunks) >= 2:
+        tail_words = len(chunks[-1].split())
+        merged_len = len(chunks[-2]) + 1 + len(chunks[-1])
+        if tail_words < min_words and merged_len <= max_chars:
+            chunks[-2] = (chunks[-2] + " " + chunks[-1]).strip()
+            chunks.pop()
 
     return chunks
 
 
-def parse_markdown(md_text: str, file_name: str, chunk_size: int, chunk_min: int) -> List[Dict[str, object]]:
+def parse_markdown(
+    md_text: str,
+    file_name: str,
+    chunk_size: int,
+    chunk_min: int,
+    chunk_max_chars: int,
+) -> List[Dict[str, object]]:
     lines = md_text.splitlines()
     doc_title = ""
 
@@ -273,8 +319,8 @@ def parse_markdown(md_text: str, file_name: str, chunk_size: int, chunk_min: int
     info = _extract_metadata_line(lines)
     plant = _normalize_plant(info["host"], fallback_plant)
     pathogen = info["pathogen"]
-    disease_type = info["type"].lower()
-    synonyms = _extract_synonyms(md_text, disease_base, pathogen)
+    disease_type = info["type"].strip() if info["type"] else "Unknown"
+    _ = _extract_synonyms(md_text, disease_base, pathogen)
 
     records: List[Dict[str, object]] = []
     current_section: Optional[str] = None
@@ -291,20 +337,29 @@ def parse_markdown(md_text: str, file_name: str, chunk_size: int, chunk_min: int
             buffer = []
             return
 
-        chunks = _chunk_text(text_block, chunk_size, chunk_min)
-        total_chunks = len(chunks)
-        for idx, chunk in enumerate(chunks, start=1):
+        section_key = _section_key(current_section)
+        section_label = f"Section: {section_key}"
+
+        if section_key in {"treatment", "management"}:
+            blocks = [b.strip() for b in text_block.split("\n\n") if b.strip()]
+        else:
+            blocks = [text_block]
+
+        all_chunks: List[str] = []
+        for block in blocks:
+            block_chunks = _chunk_text(block, chunk_size, chunk_min, chunk_max_chars)
+            all_chunks.extend(block_chunks)
+
+        total_chunks = len(all_chunks)
+        for idx, chunk in enumerate(all_chunks, start=1):
             records.append(
                 {
-                    "text": chunk,
+                    "text": f"{section_label}\n{chunk}",
                     "metadata": {
                         "disease_name": disease_name,
-                        "disease_base": disease_base,
                         "plant": plant,
-                        "section": _section_key(current_section),
-                        "pathogen": pathogen,
-                        "type": disease_type,
-                        "synonyms": synonyms,
+                        "section": section_key,
+                        "type": disease_type or "Unknown",
                         "chunk_index": idx,
                         "chunk_total": total_chunks,
                     },
@@ -328,7 +383,12 @@ def parse_markdown(md_text: str, file_name: str, chunk_size: int, chunk_min: int
     return records
 
 
-def convert_markdown_folder(input_dir: Path, chunk_size: int, chunk_min: int) -> List[Dict[str, object]]:
+def convert_markdown_folder(
+    input_dir: Path,
+    chunk_size: int,
+    chunk_min: int,
+    chunk_max_chars: int,
+) -> List[Dict[str, object]]:
     all_records: List[Dict[str, object]] = []
 
     for md_file in sorted(input_dir.glob("*.md")):
@@ -337,7 +397,7 @@ def convert_markdown_folder(input_dir: Path, chunk_size: int, chunk_min: int) ->
 
         md_text = md_file.read_text(encoding="utf-8")
         fallback_name = md_file.stem.replace("_", " ").title()
-        records = parse_markdown(md_text, fallback_name, chunk_size, chunk_min)
+        records = parse_markdown(md_text, fallback_name, chunk_size, chunk_min, chunk_max_chars)
         all_records.extend(records)
 
     return all_records
@@ -362,14 +422,20 @@ def main() -> None:
     parser.add_argument(
         "--chunk-size",
         type=int,
-        default=900,
-        help="Maximum characters per chunk (default: 900)",
+        default=250,
+        help="Maximum words per chunk (default: 250)",
     )
     parser.add_argument(
         "--chunk-min",
         type=int,
-        default=200,
-        help="Minimum characters for last chunk before merge (default: 200)",
+        default=80,
+        help="Minimum words for last chunk before merge (default: 80)",
+    )
+    parser.add_argument(
+        "--chunk-max-chars",
+        type=int,
+        default=1200,
+        help="Maximum characters per chunk (default: 1200)",
     )
     args = parser.parse_args()
 
@@ -379,7 +445,12 @@ def main() -> None:
     if not input_dir.exists() or not input_dir.is_dir():
         raise FileNotFoundError(f"Input folder not found: {input_dir}")
 
-    all_records = convert_markdown_folder(input_dir, args.chunk_size, args.chunk_min)
+    all_records = convert_markdown_folder(
+        input_dir,
+        args.chunk_size,
+        args.chunk_min,
+        args.chunk_max_chars,
+    )
 
     output_path = Path(args.output)
     if not output_path.is_absolute():

@@ -7,17 +7,17 @@ from typing import ClassVar
 class QdrantSettings(BaseModel):
     url: str = Field(default="", description="Qdrant API URL")
     api_key: str = Field(default="", description="Qdrant API key")
-    collection_name: str = Field(default="plant_diseases2", description="Qdrant collection name")
+    collection_name: str = Field(default="plant_diseases3", description="Qdrant collection name")
     upload_batch_size: int = Field(default=64, description="Batch size used during point upload")
     data_json_path: str = Field(default="Knowledge_Base/diseases_from_md.json", description="Path to cleaned disease JSON data")
 
 
 class HuggingFaceSettings(BaseModel):
     model_name: str = Field(
-        default="intfloat/multilingual-e5-large-instruct",
+        default="intfloat/multilingual-e5-large",
         description="Multilingual embedding model"
     )
-    model_dimensions: int = Field(default=384, description="Dimensionality of the model's output embeddings")
+    model_dimensions: int = Field(default=1024, description="Dimensionality of the model's output embeddings")
 
 
 class GroqSettings(BaseModel):
@@ -25,7 +25,7 @@ class GroqSettings(BaseModel):
     base_url: str = Field(default="https://api.groq.com/openai/v1", description="Groq OpenAI-compatible base URL")
     model: str = Field(default="openai/gpt-oss-120b", description="Groq model name")
     temperature: float = Field(default=0.3, description="Sampling temperature")
-    max_tokens: int = Field(default=350, description="Max tokens in response")
+    max_tokens: int = Field(default=400, description="Max tokens in response")
 
 
 class LangSmithSettings(BaseModel):
