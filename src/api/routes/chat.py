@@ -23,7 +23,12 @@ def clean_text(text: str) -> str:
 @router.post("/chat", response_model=ChatResponse)
 async def chat_rag(body: ChatRequest):
     try:
-        result = ask_rag(question=body.question, top_k=5)
+        result = ask_rag(
+            question=body.question,
+            top_k=5,
+            disease_name=body.disease_name,
+            plant=body.plant,
+        )
         answer = clean_text(result.get("answer", ""))
         return ChatResponse(
             answer=answer,

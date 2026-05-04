@@ -1,12 +1,14 @@
 """Pydantic schemas for API."""
 
 from pydantic import BaseModel, Field
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 
 class ChatRequest(BaseModel):
     question: str = Field(..., min_length=1)
     top_k: int = Field(default=5, ge=1, le=20)
+    disease_name: Optional[str] = None
+    plant: Optional[str] = None
 
 
 class ContextItem(BaseModel):

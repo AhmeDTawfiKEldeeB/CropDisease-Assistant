@@ -64,6 +64,25 @@ class QdrantDBProvider:
 
     def ensure_text_index(self, collection_name: str):
         pass
+
+    def ensure_payload_indexes(self, collection_name: str):
+        if not self.is_collection_existed(collection_name):
+            self.logger.warning(f"Collection {collection_name} does not exist.")
+            return
+        index_specs = [
+            ("metadata.disease_name", models.PayloadSchemaType.KEYWORD),
+            ("metadata.plant", models.PayloadSchemaType.KEYWORD),
+            ("metadata.type", models.PayloadSchemaType.KEYWORD),
+        ]
+        for field_name, field_type in index_specs:
+            try:
+                self.client.create_payload_index(
+                    collection_name=collection_name,
+                    field_name=field_name,
+                    field_schema=field_type,
+                )
+            except Exception as exc:
+                self.logger.warning(f"Payload index not created for {field_name}: {exc}")
     
 
 
@@ -162,12 +181,14 @@ class QdrantDBProvider:
         query_text: str,
         dense_vector: list,
         limit: int,
+        query_filter: models.Filter = None,
     ):
         try:
             response = self.client.query_points(
                 collection_name=collection_name,
                 query=dense_vector,
                 limit=limit,
+                query_filter=query_filter,
             )
         except Exception as e:
             self.logger.warning(f"Search failed: {e}")
@@ -175,5 +196,6 @@ class QdrantDBProvider:
                 collection_name=collection_name,
                 query=dense_vector,
                 limit=limit,
+                query_filter=query_filter,
             )
         return response.points

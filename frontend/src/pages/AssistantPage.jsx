@@ -72,34 +72,48 @@ const plants = [
 ];
 
 const diseasesByPlant = {
-  Apple: ["Apple Scab", "Black Rot", "Cedar Apple Rust"],
+  Apple: [
+    { id: "Apple Scab - Apple", name: "Apple Scab" },
+    { id: "Black Rot - Apple", name: "Black Rot" },
+    { id: "Cedar Apple Rust - Apple", name: "Cedar Apple Rust" },
+  ],
   Blueberry: [],
-  Cherry: ["Powdery Mildew"],
+  Cherry: [{ id: "Powdery Mildew - Cherry", name: "Powdery Mildew" }],
   "Corn (Maize)": [
-    "Cercospora Leaf Spot (Gray Leaf Spot)",
-    "Common Rust",
-    "Northern Leaf Blight",
+    { id: "Gray Leaf Spot - Corn", name: "Gray Leaf Spot" },
+    { id: "Common Rust - Corn", name: "Common Rust" },
+    { id: "Northern Leaf Blight - Corn", name: "Northern Leaf Blight" },
   ],
   Grape: [
-    "Black Rot",
-    "Esca (Black Measles)",
-    "Leaf Blight (Isariopsis Leaf Spot)",
+    { id: "Black Rot - Grape", name: "Black Rot" },
+    { id: "Esca (Black Measles) - Grape", name: "Esca (Black Measles)" },
+    { id: "Isariopsis Leaf Blight - Grape", name: "Isariopsis Leaf Blight" },
   ],
-  Orange: ["Huanglongbing (Citrus Greening)"],
-  Peach: ["Bacterial Spot"],
-  "Pepper (Bell)": ["Bacterial Spot"],
-  Potato: ["Early Blight", "Late Blight"],
-  Strawberry: ["Leaf Scorch"],
+  Orange: [
+    {
+      id: "Huanglongbing / Citrus Greening - Orange",
+      name: "Huanglongbing (Citrus Greening)",
+    },
+  ],
+  Peach: [{ id: "Bacterial Spot - Peach", name: "Bacterial Spot" }],
+  "Pepper (Bell)": [
+    { id: "Bacterial Spot - Pepper", name: "Bacterial Spot" },
+  ],
+  Potato: [
+    { id: "Early Blight - Potato", name: "Early Blight" },
+    { id: "Late Blight - Potato", name: "Late Blight" },
+  ],
+  Strawberry: [{ id: "Leaf Scorch - Strawberry", name: "Leaf Scorch" }],
   Tomato: [
-    "Bacterial Spot",
-    "Early Blight",
-    "Late Blight",
-    "Leaf Mold",
-    "Septoria Leaf Spot",
-    "Spider Mites (Two-spotted)",
-    "Target Spot",
-    "Yellow Leaf Curl Virus",
-    "Mosaic Virus",
+    { id: "Bacterial Spot - Tomato", name: "Bacterial Spot" },
+    { id: "Early Blight - Tomato", name: "Early Blight" },
+    { id: "Late Blight - Tomato", name: "Late Blight" },
+    { id: "Leaf Mold - Tomato", name: "Leaf Mold" },
+    { id: "Septoria Leaf Spot - Tomato", name: "Septoria Leaf Spot" },
+    { id: "Spider Mites - Tomato", name: "Spider Mites" },
+    { id: "Target Spot - Tomato", name: "Target Spot" },
+    { id: "Yellow Leaf Curl Virus - Tomato", name: "Yellow Leaf Curl Virus" },
+    { id: "Mosaic Virus - Tomato", name: "Mosaic Virus" },
   ],
 };
 
@@ -130,16 +144,23 @@ export default function AssistantPage() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
+  const selectedDiseaseLabel = useMemo(() => {
+    if (!selectedDisease || !selectedPlant) return "";
+    const options = diseasesByPlant[selectedPlant] || [];
+    const match = options.find((item) => item.id === selectedDisease);
+    return match?.name || selectedDisease;
+  }, [selectedDisease, selectedPlant]);
+
   useEffect(() => {
     if (!selectedDisease || !selectedPlant) return;
     const intro = {
       id: nextId++,
       role: "ai",
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      text: `Ask me anything about ${selectedDisease} on ${selectedPlant}. I can explain spread, risk, and treatment options.`,
+      text: `Ask me anything about ${selectedDiseaseLabel} on ${selectedPlantLabel}. I can explain spread, risk, and treatment options.`,
     };
     setMessages([intro]);
-  }, [selectedDisease, selectedPlant]);
+  }, [selectedDisease, selectedPlant, selectedDiseaseLabel]);
 
   const handleSend = async () => {
     const question = draft.trim();
@@ -157,7 +178,13 @@ export default function AssistantPage() {
     setLoading(true);
 
     try {
-      const data = await sendChatMessage(question);
+      const data = await sendChatMessage(
+        question,
+        5,
+        null,
+        selectedDisease,
+        selectedPlantLabel,
+      );
 
       const aiMsg = {
         id: nextId++,
@@ -274,8 +301,8 @@ export default function AssistantPage() {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {diseaseList.map((disease) => (
                   <button
-                    key={disease}
-                    onClick={() => setSelectedDisease(disease)}
+                    key={disease.id}
+                    onClick={() => setSelectedDisease(disease.id)}
                     className="group rounded-2xl border-l-[8px] border-tertiary bg-surface-container p-6 text-left shadow-sm transition hover:bg-surface-container-high"
                   >
                     <div className="mb-4 flex items-start justify-between">
@@ -286,7 +313,7 @@ export default function AssistantPage() {
                         chevron_right
                       </span>
                     </div>
-                    <h4 className="text-lg font-bold text-on-surface transition-colors group-hover:text-primary">{disease}</h4>
+                    <h4 className="text-lg font-bold text-on-surface transition-colors group-hover:text-primary">{disease.name}</h4>
                     <p className="mt-2 text-sm text-on-surface-variant">Open the assistant for guidance on this condition.</p>
                   </button>
                 ))}
@@ -316,7 +343,7 @@ export default function AssistantPage() {
               >
                 Change plant
               </button>
-              <span className="text-on-surface-variant">{selectedPlantLabel} • {selectedDisease}</span>
+              <span className="text-on-surface-variant">{selectedPlantLabel} • {selectedDiseaseLabel}</span>
             </div>
 
             <div className="flex items-center justify-between border-b border-surface-variant bg-surface/80 px-6 py-4 backdrop-blur-md">
@@ -324,7 +351,7 @@ export default function AssistantPage() {
                 <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>
                   psychology
                 </span>
-                <h2 className="text-lg font-black">Assistant - {selectedDisease} ({selectedPlantLabel})</h2>
+                <h2 className="text-lg font-black">Assistant - {selectedDiseaseLabel} ({selectedPlantLabel})</h2>
               </div>
               <button className="text-outline transition hover:text-primary">
                 <span className="material-symbols-outlined">more_vert</span>
@@ -347,7 +374,7 @@ export default function AssistantPage() {
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={`Ask about ${selectedDisease}...`}
+                  placeholder={`Ask about ${selectedDiseaseLabel}...`}
                   className="w-full rounded-full border border-outline-variant/40 bg-surface-container px-12 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button

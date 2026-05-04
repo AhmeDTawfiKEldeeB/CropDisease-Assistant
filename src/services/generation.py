@@ -1,12 +1,22 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from src.config import settings
 from src.services.prompt import build_prompt
 from src.services.retrival import retrieve
 
 
-def ask_rag(question: str, top_k: int = 5) -> Dict[str, Any]:
+def ask_rag(
+    question: str,
+    top_k: int = 5,
+    disease_name: Optional[str] = None,
+    plant: Optional[str] = None,
+) -> Dict[str, Any]:
     try:
-        contexts = retrieve(query=question, top_k=top_k)
+        contexts = retrieve(
+            query=question,
+            top_k=top_k,
+            disease_name=disease_name,
+            plant=plant,
+        )
     except Exception as e:
         return {
             "answer": "",

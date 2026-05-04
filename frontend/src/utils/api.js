@@ -38,11 +38,23 @@ async function getErrorMessage(res) {
   return `Server error ${res.status}`;
 }
 
-export async function sendChatMessage(question, topK = 5, section = null) {
+export async function sendChatMessage(
+  question,
+  topK = 5,
+  section = null,
+  diseaseName = null,
+  plant = null,
+) {
   const res = await fetch(`${BASE_URL}/api/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ question, top_k: topK, section }),
+    body: JSON.stringify({
+      question,
+      top_k: topK,
+      section,
+      disease_name: diseaseName,
+      plant,
+    }),
   });
   if (!res.ok) {
     throw new Error(await getErrorMessage(res));

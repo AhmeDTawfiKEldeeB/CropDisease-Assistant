@@ -128,20 +128,40 @@ def _clip(value: Any, limit: int = 4000) -> str:
     return str(value or "").replace("\x00", " ").strip()[:limit].strip()
 
 
-def ask_rag(question: str, top_k: int = 5) -> Dict[str, Any]:
+def ask_rag(
+    question: str,
+    top_k: int = 5,
+    disease_name: Optional[str] = None,
+    plant: Optional[str] = None,
+) -> Dict[str, Any]:
     with TraceSpan(
         name="Rag",
         run_type="chain",
-        inputs={"question": question, "top_k": top_k},
+        inputs={
+            "question": question,
+            "top_k": top_k,
+            "disease_name": disease_name,
+            "plant": plant,
+        },
     ) as chain_span:
         try:
             with TraceSpan(
                 name="retrieve_context",
                 run_type="retriever",
-                inputs={"query": question, "top_k": top_k},
+                inputs={
+                    "query": question,
+                    "top_k": top_k,
+                    "disease_name": disease_name,
+                    "plant": plant,
+                },
                 parent_id=chain_span.id,
             ) as retriever_span:
-                contexts = retrieve(query=question, top_k=top_k)
+                contexts = retrieve(
+                    query=question,
+                    top_k=top_k,
+                    disease_name=disease_name,
+                    plant=plant,
+                )
                 documents = [
                     {
                         "page_content": c.get("text", ""),

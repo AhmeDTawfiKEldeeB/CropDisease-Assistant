@@ -1,6 +1,7 @@
 from functools import lru_cache
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from sentence_transformers import SentenceTransformer
+from qdrant_client import models
 from src.config import settings
 from src.infrastructure.qdrant.vectorstore import QdrantDBProvider
 
@@ -9,7 +10,12 @@ def _embedder() -> SentenceTransformer:
     return SentenceTransformer(settings.huggingface.model_name)
 
 
-def retrieve(query: str, top_k: int = 5) -> List[Dict[str, Any]]:
+def retrieve(
+    query: str,
+    top_k: int = 5,
+    disease_name: Optional[str] = None,
+    plant: Optional[str] = None,
+) -> List[Dict[str, Any]]:
     if not query or not query.strip():
         raise ValueError("query is required")
 
@@ -23,11 +29,33 @@ def retrieve(query: str, top_k: int = 5) -> List[Dict[str, Any]]:
             convert_to_numpy=True,
         )[0].tolist()
 
+        conditions = []
+        if disease_name:
+            conditions.append(
+                models.FieldCondition(
+                    key="metadata.disease_name",
+                    match=models.MatchValue(value=disease_name),
+                )
+            )
+        if plant:
+            conditions.append(
+                models.FieldCondition(
+                    key="metadata.plant",
+                    match=models.MatchValue(value=plant),
+                )
+            )
+
+        query_filter = models.Filter(must=conditions) if conditions else None
+
+        if disease_name or plant:
+            provider.ensure_payload_indexes(settings.qdrant.collection_name)
+
         points = provider.hybrid_search(
             collection_name=settings.qdrant.collection_name,
             query_text=query,
             dense_vector=dense_vector,
             limit=top_k,
+            query_filter=query_filter,
         )
 
         results = []
