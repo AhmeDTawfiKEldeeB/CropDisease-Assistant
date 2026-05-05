@@ -112,8 +112,8 @@ const diseasesByPlant = {
     { id: "Septoria Leaf Spot - Tomato", name: "Septoria Leaf Spot" },
     { id: "Spider Mites - Tomato", name: "Spider Mites" },
     { id: "Target Spot - Tomato", name: "Target Spot" },
-    { id: "Yellow Leaf Curl Virus - Tomato", name: "Yellow Leaf Curl Virus" },
-    { id: "Mosaic Virus - Tomato", name: "Mosaic Virus" },
+    { id: "Tomato Yellow Leaf Curl Virus - Tomato", name: "Tomato Yellow Leaf Curl Virus" },
+    { id: "Tomato Mosaic Virus - Tomato", name: "Tomato Mosaic Virus" },
   ],
 };
 
