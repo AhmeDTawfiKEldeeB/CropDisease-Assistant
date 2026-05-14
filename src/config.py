@@ -25,7 +25,7 @@ class GroqSettings(BaseModel):
     base_url: str = Field(default="https://api.groq.com/openai/v1", description="Groq OpenAI-compatible base URL")
     model: str = Field(default="openai/gpt-oss-120b", description="Groq model name")
     temperature: float = Field(default=0.3, description="Sampling temperature")
-    max_tokens: int = Field(default=400, description="Max tokens in response")
+    max_tokens: int = Field(default=500, description="Max tokens in response")
 
 
 class LangSmithSettings(BaseModel):
