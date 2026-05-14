@@ -50,5 +50,4 @@ class Settings(BaseSettings):
         frozen=True,
     )
 
-
 settings = Settings()
