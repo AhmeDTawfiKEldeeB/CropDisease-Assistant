@@ -102,10 +102,19 @@ export default function DetectionWorkspacePage() {
                     </span>
                   </div>
                   {result && (
-                    <div className="rounded-2xl bg-[#eaf3e7] px-4 py-3 text-center">
-                      <p className="text-xs font-bold uppercase tracking-wider text-[#235f34]">Detected Disease</p>
-                      <p className="mt-1 text-lg font-bold text-[#235f34]">{statusText}</p>
+                    <div className={`rounded-2xl px-4 py-3 text-center ${result.top_confidence < 45 ? "bg-amber-50 border border-amber-300" : "bg-[#eaf3e7]"}`}>
+                      {result.top_confidence >= 45 && (
+                        <>
+                          <p className="text-xs font-bold uppercase tracking-wider text-[#235f34]">Detected Disease</p>
+                          <p className="mt-1 text-lg font-bold text-[#235f34]">{statusText}</p>
+                        </>
+                      )}
                       <p className="mt-1 text-sm text-on-surface-variant">Confidence: {Math.round(result.top_confidence)}%</p>
+                      {result.top_confidence < 45 && (
+                        <p className="mt-2 text-sm font-semibold text-amber-700">
+                          Low confidence — try uploading another clearer, well-lit photo
+                        </p>
+                      )}
                     </div>
                   )}
                   {preview && !scanning && !result && !error && (
