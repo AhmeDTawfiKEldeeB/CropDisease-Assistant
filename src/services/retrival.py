@@ -7,6 +7,7 @@ from src.infrastructure.qdrant.vectorstore import QdrantDBProvider
 
 @lru_cache(maxsize=1)
 def _embedder() -> SentenceTransformer:
+    # Lazily construct and cache the sentence transformer model.
     return SentenceTransformer(settings.huggingface.model_name)
 
 
@@ -16,6 +17,7 @@ def retrieve(
     disease_name: Optional[str] = None,
     plant: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
+    # Embed query text and search Qdrant for matching contexts.
     if not query or not query.strip():
         raise ValueError("query is required")
 

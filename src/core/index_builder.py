@@ -9,12 +9,14 @@ from src.infrastructure.qdrant.vectorstore import QdrantDBProvider
 
 
 def _resolve_data_path(data_path: str | None) -> Path:
+    # Resolve explicit path or fall back to configured default path.
     if data_path:
         return Path(data_path)
     return Path(settings.qdrant.data_json_path)
 
 
 def _load_records(path: Path) -> List[Dict[str, Any]]:
+    # Load and validate JSON records from disk.
     resolved = path if path.is_absolute() else Path.cwd() / path
     if not resolved.exists():
         raise FileNotFoundError(f"Data file not found: {resolved}")
@@ -26,6 +28,7 @@ def _load_records(path: Path) -> List[Dict[str, Any]]:
 
 
 def _prepare_records(records: List[Dict[str, Any]]) -> Tuple[List[str], List[Dict[str, Any]], List[str]]:
+    # Extract texts, payloads, and stable UUIDs from raw records.
     texts: List[str] = []
     payloads: List[Dict[str, Any]] = []
     ids: List[str] = []
@@ -50,6 +53,7 @@ def _prepare_records(records: List[Dict[str, Any]]) -> Tuple[List[str], List[Dic
 
 
 def build_index(data_path: str | None = None, recreate_collection: bool = True) -> int:
+    # Build or reset the Qdrant collection and upload embedded records.
     if not settings.qdrant.url:
         raise ValueError("QDRANT__URL is required")
     if not settings.qdrant.api_key:
@@ -98,6 +102,7 @@ def build_index(data_path: str | None = None, recreate_collection: bool = True) 
 
 
 def main() -> None:
+    # CLI entrypoint for building the vector index.
     parser = argparse.ArgumentParser(description="Build Qdrant index from cleaned disease JSON")
     parser.add_argument(
         "--data-path",

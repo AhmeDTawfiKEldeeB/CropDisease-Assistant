@@ -10,6 +10,7 @@ def ask_rag(
     disease_name: Optional[str] = None,
     plant: Optional[str] = None,
 ) -> Dict[str, Any]:
+    # Retrieve contexts and generate an answer using the configured LLM.
     try:
         contexts = retrieve(
             query=question,
@@ -58,6 +59,7 @@ def ask_rag(
 
 
 def ask_llm(question: str) -> Dict[str, Any]:
+    # Query the LLM directly without retrieval.
     try:
         from openai import OpenAI
         client = OpenAI(api_key=settings.groq.api_key, base_url=settings.groq.base_url)

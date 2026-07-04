@@ -1,155 +1,158 @@
 import { Link } from "react-router-dom";
 import PageTransition from "../components/PageTransition";
-import TopControls from "../components/TopControls";
 import { imageUrls } from "../data/mockData";
-import { useI18n } from "../hooks/useI18n";
 
 export default function LandingPage() {
-  const { t, isRTL } = useI18n();
-
   return (
     <PageTransition>
-      <div className="min-h-screen bg-surface text-on-surface dark:bg-slate-950 dark:text-slate-100">
-        <nav className="fixed top-0 z-50 w-full border-b border-emerald-100/60 bg-emerald-50/80 px-4 py-3 backdrop-blur-xl md:px-8 dark:border-slate-800 dark:bg-slate-900/80">
-          <div className="mx-auto flex max-w-7xl items-center justify-between">
-            <div className="text-xl font-black tracking-tight text-emerald-900 dark:text-emerald-100">{t.appName}</div>
-            <div className="hidden items-center gap-8 text-sm md:flex">
-              <a href="#" className="border-b-2 border-emerald-600 pb-1 font-semibold text-emerald-700">
-                Science
-              </a>
-              <a href="#" className="text-slate-600 transition hover:text-emerald-800 dark:text-slate-300">
-                Solutions
-              </a>
-              <a href="#" className="text-slate-600 transition hover:text-emerald-800 dark:text-slate-300">
-                Pricing
-              </a>
-              <a href="#" className="text-slate-600 transition hover:text-emerald-800 dark:text-slate-300">
-                About
-              </a>
-            </div>
-            <TopControls />
+      <div className="min-h-screen bg-[#f7f8f3] text-[#122017]">
+        <nav className="fixed inset-x-0 top-0 z-50 border-b border-black/5 bg-[#f7f8f3]/92 backdrop-blur-xl">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+            <Link to="/" className="flex items-center gap-2 text-[18px] font-semibold tracking-tight text-[#122017]">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#235f34] text-white">
+                <span className="material-symbols-outlined text-[20px]">eco</span>
+              </span>
+              <span>Digital Greenhouse</span>
+            </Link>
+
+            <Link
+              to="/workspace"
+              className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-b from-[#235f34] to-[#183f26] px-6 py-3 text-[15px] font-semibold text-white shadow-[0_18px_35px_rgba(24,63,38,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_40px_rgba(24,63,38,0.34)]"
+            >
+              Get Started
+            </Link>
           </div>
         </nav>
 
-        <section className="relative overflow-hidden px-6 pb-16 pt-24 lg:px-12">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-surface to-white dark:from-slate-950 dark:via-slate-950 dark:to-slate-900" />
-          <div className="absolute -left-14 top-20 h-[420px] w-[420px] rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute -bottom-10 right-0 h-[300px] w-[300px] rounded-full bg-tertiary/10 blur-3xl" />
+        <main className="mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
+          <section className="relative overflow-hidden pb-18 pt-6 lg:pb-24 lg:pt-12">
+            <div className="absolute left-[-6rem] top-10 h-[26rem] w-[26rem] rounded-full bg-[#235f34]/14 blur-3xl" />
+            <div className="absolute right-0 top-20 h-[18rem] w-[18rem] rounded-full bg-[#235f34]/10 blur-3xl" />
 
-          <div className="relative mx-auto grid min-h-[88vh] max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-2">
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary-fixed px-4 py-2 text-xs font-bold uppercase tracking-wider text-on-primary-fixed">
-                <span className="material-symbols-outlined text-sm">auto_awesome</span>
-                {t.landing.badge}
+            <div className="relative grid items-center gap-12 lg:grid-cols-[1fr_1.02fr] lg:gap-16">
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center rounded-full bg-[#235f34] px-4 py-2 text-[12px] font-medium uppercase tracking-[0.16em] text-white shadow-sm">
+                  AI Plant Disease Diagnosis
+                </div>
+
+                <h1 className="mt-7 text-[clamp(3.5rem,8vw,5.8rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-[#112017]">
+                  Diagnose.
+                  <br />
+                  Understand.
+                  <br />
+                  <span className="text-[#235f34]">Protect.</span>
+                </h1>
+
+                <p className="mt-8 max-w-xl text-[18px] leading-8 text-[#415048] sm:text-[19px]">
+                  Upload a clear image of your plant and get an instant AI diagnosis with expert-backed guidance.
+                </p>
+
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <Link
+                    to="/workspace"
+                    className="inline-flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-b from-[#224f34] to-[#153522] px-8 py-4 text-[16px] font-medium text-white shadow-[0_18px_30px_rgba(21,53,34,0.28)] transition hover:-translate-y-0.5"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">upload</span>
+                    Start Diagnosis
+                  </Link>
+                </div>
               </div>
 
-              <h1 className="text-5xl font-black leading-[1.1] tracking-tight lg:text-7xl">
-                {t.landing.titleA} <br />
-                <span className="italic text-primary">{t.landing.titleB}</span>
-              </h1>
-              <p className="max-w-2xl text-lg leading-8 text-on-surface-variant">{t.landing.subtitle}</p>
-
-              <div className="flex flex-col gap-4 sm:flex-row">
-                <Link
-                  to="/workspace"
-                  className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary to-primary-container px-8 py-4 text-lg font-bold text-white shadow-xl transition hover:scale-[1.02]"
-                >
-                  <span className="material-symbols-outlined">upload_file</span>
-                  {t.landing.ctaUpload}
-                </Link>
-                <button className="rounded-2xl px-8 py-4 font-semibold transition hover:bg-surface-container dark:hover:bg-slate-800">
-                  {t.landing.ctaDemo}
-                </button>
+              <div className="relative flex justify-center lg:justify-end">
+                <div className="absolute inset-x-8 bottom-[-1.5rem] h-28 rounded-full bg-black/8 blur-3xl" />
+                <div className="relative w-full max-w-[680px] overflow-hidden rounded-[3rem]">
+                  <img
+                    src={imageUrls.hero}
+                    alt="Disease-affected leaf close up"
+                    className="h-[560px] w-full object-cover object-center sm:h-[680px]"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-black/10" />
+                </div>
               </div>
+            </div>
+          </section>
 
-              <div className="flex items-center gap-4 border-t border-outline-variant/30 pt-6">
-                <div className={isRTL ? "flex space-x-reverse -space-x-3" : "flex -space-x-3"}>
-                  {[1, 2, 3].map((item) => (
-                    <img
-                      key={item}
-                      src={`https://i.pravatar.cc/100?img=${item + 10}`}
-                      className="h-12 w-12 rounded-full border-4 border-surface object-cover"
-                      alt="avatar"
-                    />
-                  ))}
+          <section id="how-it-works" className="pb-20 pt-10 lg:pb-28 lg:pt-16">
+            <h2 className="text-center text-[clamp(2rem,4vw,3.25rem)] font-medium tracking-[-0.05em] text-[#122017]">
+              How it works
+            </h2>
+
+            <div className="mt-12 grid gap-8 md:grid-cols-3 md:gap-6 lg:mt-16 lg:gap-10">
+              <div className="flex items-start gap-5">
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#235f34] text-white shadow-sm">
+                  <span className="material-symbols-outlined text-[32px]">photo_camera</span>
                 </div>
                 <div>
-                  <p className="font-bold">{t.landing.trusted}</p>
-                  <p className="text-sm text-on-surface-variant">{t.landing.trustedSub}</p>
+                  <p className="text-[16px] font-semibold text-[#122017]">1. Upload Image</p>
+                  <p className="mt-2 max-w-[15rem] text-[15px] leading-7 text-[#55655c]">Take or upload a clear photo of the affected leaf.</p>
+                </div>
+                <span className="hidden pt-6 text-[28px] text-[#122017]/80 md:block">→</span>
+              </div>
+
+              <div className="flex items-start gap-5">
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#235f34] text-white shadow-sm">
+                  <span className="material-symbols-outlined text-[32px]">scan</span>
+                </div>
+                <div>
+                  <p className="text-[16px] font-semibold text-[#122017]">2. AI Analysis</p>
+                  <p className="mt-2 max-w-[15rem] text-[15px] leading-7 text-[#55655c]">Our AI analyzes the image to detect the disease.</p>
+                </div>
+                <span className="hidden pt-6 text-[28px] text-[#122017]/80 md:block">→</span>
+              </div>
+
+              <div className="flex items-start gap-5">
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#235f34] text-white shadow-sm">
+                  <span className="material-symbols-outlined text-[32px]">sms</span>
+                </div>
+                <div>
+                  <p className="text-[16px] font-semibold text-[#122017]">3. Get Guidance</p>
+                  <p className="mt-2 max-w-[15rem] text-[15px] leading-7 text-[#55655c]">Receive the diagnosis and recommended treatments.</p>
                 </div>
               </div>
             </div>
+          </section>
 
-            <div className="relative">
-              <div className="relative overflow-hidden rounded-3xl bg-surface-container-high shadow-2xl">
-                <img src={imageUrls.hero} alt="hero" className="aspect-[4/5] w-full object-cover" />
+          <section id="assistant" className="pb-20 lg:pb-28">
+            <div className="relative overflow-hidden rounded-[2rem] bg-[#062014] shadow-[0_28px_70px_rgba(6,32,20,0.25)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_45%,rgba(118,194,119,0.14),transparent_25%),radial-gradient(circle_at_78%_50%,rgba(118,194,119,0.12),transparent_34%)]" />
+              <div className="grid min-h-[360px] items-center gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[0.95fr_1.15fr_0.55fr] lg:px-12 lg:py-10">
+                <div className="relative overflow-hidden rounded-[1.75rem]">
+                  <img
+                    src={imageUrls.leaf}
+                    alt="Healthy green plant leaves"
+                    className="h-full min-h-[280px] w-full object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-black/30 via-transparent to-transparent" />
+                </div>
 
-                <div className={isRTL ? "glass absolute right-6 top-8 w-64 animate-float rounded-2xl border-r-4 border-primary p-4 shadow-2xl" : "glass absolute left-6 top-8 w-64 animate-float rounded-2xl border-l-4 border-primary p-4 shadow-2xl"}>
-                  <div className="mb-2 flex items-center justify-between">
-                    <span className="rounded-full bg-primary-fixed px-2 py-1 text-[10px] font-bold">HEALTHY</span>
-                    <span className="material-symbols-outlined text-primary">check_circle</span>
+                <div className="relative max-w-xl text-white">
+                  <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8fc893]">AI Assistant</p>
+                  <h3 className="mt-4 text-[clamp(2rem,4vw,3.15rem)] font-medium leading-[1.08] tracking-[-0.05em] text-white">
+                    Have questions about a disease?
+                  </h3>
+                  <p className="mt-5 max-w-lg text-[17px] leading-8 text-white/78">
+                    Chat with our AI assistant to understand the cause, symptoms, and best treatment for your plant.
+                  </p>
+                  <Link
+                    to="/assistant"
+                    className="mt-8 inline-flex items-center justify-center gap-3 rounded-full border border-white/18 bg-transparent px-7 py-4 text-[16px] font-medium text-white transition hover:border-[#8fc893]/45 hover:bg-white/5"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">chat_bubble</span>
+                    Open Assistant
+                  </Link>
+                </div>
+
+                <div className="relative hidden items-center justify-center lg:flex">
+                  <div className="absolute h-44 w-44 rounded-full border border-white/10" />
+                  <div className="absolute h-32 w-32 rounded-full border border-white/10" />
+                  <div className="flex h-28 w-28 items-center justify-center rounded-full border-4 border-[#235f34] text-[#235f34]">
+                    <span className="material-symbols-outlined text-[54px]">forum</span>
                   </div>
-                  <p className="font-bold">Monstera Deliciosa</p>
-                  <p className="text-xs text-on-surface-variant">Chlorophyll efficiency at 98%.</p>
-                </div>
-
-                <div className={isRTL ? "glass absolute bottom-12 left-6 w-72 animate-float rounded-2xl border-r-4 border-tertiary p-4 [animation-delay:1s] shadow-2xl" : "glass absolute bottom-12 right-6 w-72 animate-float rounded-2xl border-l-4 border-tertiary p-4 [animation-delay:1s] shadow-2xl"}>
-                  <div className="mb-2 flex items-center justify-between">
-                    <span className="rounded-full bg-tertiary-fixed px-2 py-1 text-[10px] font-bold">DETECTED</span>
-                    <span className="material-symbols-outlined text-tertiary">warning</span>
-                  </div>
-                  <p className="font-bold">Early Blight (Fungal)</p>
-                  <p className="text-xs text-on-surface-variant">Apply organic neem oil and isolate from airflow path.</p>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        <section className="bg-surface-container-low px-6 py-20 lg:px-12 dark:bg-slate-900">
-          <div className="mx-auto max-w-7xl">
-            <h2 className="mb-10 text-center text-4xl font-black tracking-tight">{t.landing.sectionTitle}</h2>
-            <div className="grid auto-rows-[220px] grid-cols-1 gap-6 md:grid-cols-12">
-              <div className="rounded-3xl bg-white p-8 shadow-soft md:col-span-8 dark:bg-slate-950">
-                <p className="mb-2 text-3xl font-black">99.4% Recognition Accuracy</p>
-                <p className="max-w-md text-on-surface-variant">Trained on over 2 million plant specimens across greenhouse and open-field conditions.</p>
-              </div>
-              <div className="relative overflow-hidden rounded-3xl bg-primary p-8 text-white md:col-span-4 md:row-span-2">
-                <img src={imageUrls.leaf} alt="leaf" className="absolute inset-0 h-full w-full object-cover opacity-20" />
-                <div className="relative">
-                  <span className="material-symbols-outlined mb-3 text-4xl">clinical_notes</span>
-                  <p className="text-3xl font-black">Treatment Plans</p>
-                  <p className="mt-3 text-sm text-white/90">Science-backed recommendations customized for your environment.</p>
-                </div>
-              </div>
-              <div className="rounded-3xl bg-surface-container p-8 text-center md:col-span-4 dark:bg-slate-800">
-                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-primary-fixed">
-                  <span className="material-symbols-outlined text-on-primary-fixed">speed</span>
-                </div>
-                <p className="text-xl font-bold">Instant Results</p>
-              </div>
-              <div className="rounded-3xl border-l-4 border-tertiary bg-tertiary-fixed/20 p-8 md:col-span-4">
-                <p className="font-bold text-tertiary">Pathogen Alerts</p>
-                <p className="mt-2 text-sm text-on-surface-variant">Identify disease signatures early before crop-wide spread.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="relative overflow-hidden bg-emerald-950 px-6 py-24 text-white lg:px-12">
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-700/40 blur-3xl" />
-          <div className="mx-auto max-w-4xl text-center">
-            <h3 className="text-4xl font-black lg:text-6xl">{t.landing.ctaBottom}</h3>
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link to="/workspace" className="rounded-2xl bg-white px-10 py-4 font-black text-emerald-950 transition hover:scale-105">
-                {t.landing.ctaStart}
-              </Link>
-              <button className="rounded-2xl border border-emerald-500/50 px-10 py-4 font-bold transition hover:bg-emerald-900/50">
-                {t.landing.ctaEnterprise}
-              </button>
-            </div>
-          </div>
-        </section>
+          </section>
+        </main>
       </div>
     </PageTransition>
   );

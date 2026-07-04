@@ -6,7 +6,7 @@ import { historyItems } from "../data/mockData";
 import { useI18n } from "../hooks/useI18n";
 
 const severityClass = {
-  low: "bg-emerald-100 text-emerald-800",
+  low: "bg-[#235f34] text-white",
   medium: "bg-amber-100 text-amber-800",
   high: "bg-rose-100 text-rose-800",
 };

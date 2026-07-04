@@ -7,7 +7,7 @@ from typing import ClassVar
 class QdrantSettings(BaseModel):
     url: str = Field(default="", description="Qdrant API URL")
     api_key: str = Field(default="", description="Qdrant API key")
-    collection_name: str = Field(default="plant_diseases3", description="Qdrant collection name")
+    collection_name: str = Field(default="plant_diseases", description="Qdrant collection name")
     upload_batch_size: int = Field(default=64, description="Batch size used during point upload")
     data_json_path: str = Field(default="Knowledge_Base/diseases_from_md.json", description="Path to cleaned disease JSON data")
 

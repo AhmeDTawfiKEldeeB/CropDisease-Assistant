@@ -1,6 +1,6 @@
 export const imageUrls = {
-  hero: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=1200&q=80",
-  leaf: "https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&w=1400&q=80",
+  hero: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=1400&q=80",
+  leaf: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=1400&q=80",
   greenhouse:
     "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?auto=format&fit=crop&w=1200&q=80",
   topPlants:
