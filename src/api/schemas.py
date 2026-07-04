@@ -17,6 +17,15 @@ class ContextItem(BaseModel):
     score: float = 0.0
 
 
+class PredictionItem(BaseModel):
+    class_name: str
+    confidence: float
+
+
+class DetectResponse(BaseModel):
+    predictions: List[PredictionItem]
+    top_class: str
+    top_confidence: float
 
 
 class ChatResponse(BaseModel):

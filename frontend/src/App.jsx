@@ -3,7 +3,6 @@ import { AnimatePresence } from "framer-motion";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import DetectionWorkspacePage from "./pages/DetectionWorkspacePage";
-import DiagnosisPage from "./pages/DiagnosisPage";
 import AssistantPage from "./pages/AssistantPage";
 import HistoryPage from "./pages/HistoryPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -79,7 +78,6 @@ export default function App() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/workspace" element={<DetectionWorkspacePage />} />
-          <Route path="/diagnosis" element={<DiagnosisPage />} />
           <Route path="/assistant" element={<AssistantPage />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/settings" element={<SettingsPage />} />

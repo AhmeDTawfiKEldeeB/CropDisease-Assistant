@@ -1,21 +1,65 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Layout from "../components/Layout";
 import PageTransition from "../components/PageTransition";
 import Card from "../components/Card";
 import UploadBox from "../components/UploadBox";
 import ProgressBar from "../components/ProgressBar";
-import { imageUrls } from "../data/mockData";
 import { useI18n } from "../hooks/useI18n";
+import { detectImage } from "../utils/api";
+
+function formatDiseaseName(name) {
+  return name.replace(/_/g, " ").replace(/___/g, " - ");
+}
 
 export default function DetectionWorkspacePage() {
   const { t } = useI18n();
   const [preview, setPreview] = useState("");
   const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+  const [scanning, setScanning] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [statusText, setStatusText] = useState("Waiting for upload");
+  const [error, setError] = useState("");
+  const [result, setResult] = useState(null);
 
-  const handleFile = (file) => {
-    setPreview(URL.createObjectURL(file));
-    setFileName(file.name);
-  };
+  const handleFile = useCallback((f) => {
+    setPreview(URL.createObjectURL(f));
+    setFileName(f.name);
+    setFile(f);
+    setError("");
+    setProgress(0);
+    setStatusText("Waiting for upload");
+    setResult(null);
+  }, []);
+
+  const handleScan = useCallback(async () => {
+    if (!file) return;
+    setScanning(true);
+    setError("");
+    setProgress(30);
+    setStatusText("Analyzing leaf image...");
+    setResult(null);
+
+    try {
+      const res = await detectImage(file);
+      setResult(res);
+      setProgress(100);
+      setStatusText(formatDiseaseName(res.top_class));
+    } catch (err) {
+      setError(err.message || "Prediction failed");
+      setProgress(0);
+      setStatusText("Error");
+    } finally {
+      setScanning(false);
+    }
+  }, [file]);
+
+  const handleCancel = useCallback(() => {
+    setScanning(false);
+    setProgress(0);
+    setStatusText("Waiting for upload");
+    setResult(null);
+  }, []);
 
   const checklist = [
     "Use a sharp, well-lit leaf photo.",
@@ -46,16 +90,40 @@ export default function DetectionWorkspacePage() {
                 </div>
 
                 <div className="space-y-5 px-6 py-6">
-                  <ProgressBar value={0} />
+                  <ProgressBar value={progress} />
                   <div className="flex items-center justify-between text-sm text-on-surface-variant">
                     <span>Identifying pathogen markers</span>
-                    <span className="font-semibold italic text-primary">0%</span>
+                    <span className="font-semibold italic text-primary">{progress}%</span>
                   </div>
                   <div className="flex items-center justify-between gap-3 rounded-2xl bg-surface-container-low px-4 py-3">
                     <span className="text-sm font-medium text-on-surface">Status</span>
-                    <span className="text-sm font-semibold text-[#235f34]">Waiting for upload</span>
+                    <span className={`text-sm font-semibold ${error ? "text-red-600" : result ? "text-[#235f34]" : "text-[#235f34]"}`}>
+                      {error || statusText}
+                    </span>
                   </div>
-                  <button className="text-sm font-bold uppercase tracking-wider text-tertiary/70 transition hover:text-tertiary">{t.detect.cancel}</button>
+                  {result && (
+                    <div className="rounded-2xl bg-[#eaf3e7] px-4 py-3 text-center">
+                      <p className="text-xs font-bold uppercase tracking-wider text-[#235f34]">Detected Disease</p>
+                      <p className="mt-1 text-lg font-bold text-[#235f34]">{statusText}</p>
+                      <p className="mt-1 text-sm text-on-surface-variant">Confidence: {Math.round(result.top_confidence)}%</p>
+                    </div>
+                  )}
+                  {preview && !scanning && !result && !error && (
+                    <button
+                      onClick={handleScan}
+                      className="w-full rounded-xl bg-[#235f34] py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-[#1a4a28]"
+                    >
+                      Start Diagnosis
+                    </button>
+                  )}
+                  {(scanning || result) && (
+                    <button
+                      onClick={handleCancel}
+                      className="text-sm font-bold uppercase tracking-wider text-tertiary/70 transition hover:text-tertiary"
+                    >
+                      {t.detect.cancel}
+                    </button>
+                  )}
                 </div>
               </Card>
             </div>

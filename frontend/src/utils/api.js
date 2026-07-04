@@ -74,6 +74,19 @@ export async function sendLLMMessage(question, history = []) {
   return res.json();
 }
 
+export async function detectImage(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch(`${BASE_URL}/api/detect`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    throw new Error(await getErrorMessage(res));
+  }
+  return res.json();
+}
+
 export async function checkHealth() {
   const res = await fetch(`${BASE_URL}/api/health`);
   if (!res.ok) throw new Error(`Health check failed: ${res.status}`);
