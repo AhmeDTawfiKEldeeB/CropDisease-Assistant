@@ -1,4 +1,5 @@
 import { useMemo, useRef, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Layout from "../components/Layout";
 import PageTransition from "../components/PageTransition";
@@ -7,6 +8,25 @@ import TypingIndicator from "../components/TypingIndicator";
 import { sendChatMessage } from "../utils/api";
 
 let nextId = 1;
+
+function parseModelClass(classStr) {
+  const parts = classStr.split("___");
+  if (parts.length !== 2) return null;
+  let plant = parts[0].replace(/_/g, " ").replace(/\s+/g, " ").trim();
+  const rawDisease = parts[1].replace(/_/g, " ").replace(/\s+/g, " ").trim();
+
+  const plantMap = {
+    "Corn (maize)": "Corn (Maize)",
+    "Pepper, bell": "Pepper (Bell)",
+    "Cherry (including sour)": "Cherry",
+  };
+  if (plantMap[plant]) plant = plantMap[plant];
+
+  const match = plants.find((p) => p.id.toLowerCase() === plant.toLowerCase());
+  if (match) plant = match.id;
+
+  return { plant, disease: rawDisease };
+}
 
 const plants = [
   {
@@ -117,9 +137,31 @@ const diseasesByPlant = {
   ],
 };
 
+function matchDiseaseId(plantId, rawDisease) {
+  const diseases = diseasesByPlant[plantId];
+  if (!diseases) return null;
+  const rawLower = rawDisease.toLowerCase();
+  for (const d of diseases) {
+    if (d.name.toLowerCase() === rawLower || d.name.toLowerCase().includes(rawLower) || rawLower.includes(d.name.toLowerCase())) {
+      return d.id;
+    }
+  }
+  return null;
+}
+
 export default function AssistantPage() {
-  const [selectedPlant, setSelectedPlant] = useState(null);
-  const [selectedDisease, setSelectedDisease] = useState(null);
+  const location = useLocation();
+  const initialDisease = location.state?.disease;
+
+  const parsed = useMemo(() => {
+    if (!initialDisease) return null;
+    return parseModelClass(initialDisease);
+  }, [initialDisease]);
+
+  const [selectedPlant, setSelectedPlant] = useState(parsed?.plant || null);
+  const [selectedDisease, setSelectedDisease] = useState(
+    parsed ? matchDiseaseId(parsed.plant, parsed.disease) : null
+  );
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);

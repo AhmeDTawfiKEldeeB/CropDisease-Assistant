@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import PageTransition from "../components/PageTransition";
 import Card from "../components/Card";
@@ -13,6 +14,7 @@ function formatDiseaseName(name) {
 
 export default function DetectionWorkspacePage() {
   const { t } = useI18n();
+  const navigate = useNavigate();
   const [preview, setPreview] = useState("");
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState(null);
@@ -116,6 +118,14 @@ export default function DetectionWorkspacePage() {
                         </p>
                       )}
                     </div>
+                  )}
+                  {result && result.top_confidence >= 45 && (
+                    <button
+                      onClick={() => navigate("/assistant", { state: { disease: result.top_class } })}
+                      className="w-full rounded-xl bg-primary py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg transition hover:bg-primary/90"
+                    >
+                      Ask Assistant
+                    </button>
                   )}
                   {preview && !scanning && !result && !error && (
                     <button
