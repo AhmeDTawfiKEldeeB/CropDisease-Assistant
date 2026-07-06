@@ -175,6 +175,7 @@ export default function AssistantPage() {
   }, [selectedPlant]);
 
   const selectedPlantData = useMemo(() => {
+    
     if (!selectedPlant) return null;
     return plants.find((plant) => plant.id === selectedPlant) || null;
   }, [selectedPlant]);
