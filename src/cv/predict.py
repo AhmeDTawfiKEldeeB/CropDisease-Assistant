@@ -1,14 +1,16 @@
 import logging
 from pathlib import Path
 
+import numpy as np
 import torch
-import torch.nn.functional as F
-from torchvision import transforms
+import torch.nn as nn
+from torchvision import models, transforms
 from PIL import Image
 
-from src.cv.model import PlantDiseaseResNet
-
 logger = logging.getLogger(__name__)
+
+ENTROPY_THRESHOLD = 0.4
+GAP_THRESHOLD = 5.0
 
 CLASSES = [
     "Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust", "Apple___healthy",
@@ -25,13 +27,12 @@ CLASSES = [
     "Tomato___Tomato_Yellow_Leaf_Curl_Virus", "Tomato___Tomato_mosaic_virus", "Tomato___healthy",
 ]
 
-MODEL_PATH = Path(__file__).resolve().parent.parent / "api" / "model" / "best_model.pth"
+MODEL_PATH = Path(__file__).resolve().parent.parent / "api" / "model" / "resnet50_plant_38class_best.pth.zip"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 _transform = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
+    transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
@@ -44,13 +45,16 @@ def _load_model():
     if _model is not None:
         return _model
 
-    model = PlantDiseaseResNet(num_classes=len(CLASSES))
+    weights = models.ResNet50_Weights.DEFAULT
+    model = models.resnet50(weights=weights)
+    model.fc = nn.Linear(model.fc.in_features, len(CLASSES))
+
     state_dict = torch.load(str(MODEL_PATH), map_location=device, weights_only=True)
-    model.load_state_dict(state_dict)
+    model.load_state_dict(state_dict, strict=False)
     model.to(device)
     model.eval()
     _model = model
-    logger.info("Model loaded successfully on %s", device)
+    logger.info("ResNet50 model loaded successfully on %s", device)
     return _model
 
 
@@ -60,13 +64,20 @@ def preprocess_image(image: Image.Image) -> torch.Tensor:
     return tensor
 
 
+def _compute_entropy(probs: np.ndarray) -> float:
+    p = probs + 1e-10
+    entropy = -(p * np.log(p)).sum()
+    max_entropy = np.log(len(CLASSES))
+    return float(entropy / max_entropy)
+
+
 @torch.no_grad()
 def predict(image: Image.Image, top_k: int = 5):
     model = _load_model()
     tensor = preprocess_image(image)
-    output = model(tensor)[0]
-    probs = F.softmax(output, dim=0).cpu().numpy()
-    top_indices = probs.argsort()[::-1][:top_k]
+    outputs = model(tensor)
+    probs = torch.softmax(outputs, dim=1)[0].cpu().numpy()
+    top_indices = np.argsort(probs)[::-1][:top_k]
 
     results = []
     for idx in top_indices:
@@ -75,8 +86,13 @@ def predict(image: Image.Image, top_k: int = 5):
             "confidence": round(float(probs[idx]) * 100, 2),
         })
 
+    entropy = _compute_entropy(probs)
+    gap = results[0]["confidence"] - (results[1]["confidence"] if len(results) > 1 else 0)
+    is_reliable = entropy < ENTROPY_THRESHOLD and gap > GAP_THRESHOLD
+
     return {
         "predictions": results,
         "top_class": results[0]["class_name"],
         "top_confidence": results[0]["confidence"],
+        "is_reliable": is_reliable,
     }
