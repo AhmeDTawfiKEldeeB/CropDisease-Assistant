@@ -217,3 +217,5 @@ def get_classifier() -> PlantDiseaseClassifier:
     if _default_classifier is None:
         _default_classifier = PlantDiseaseClassifier()
     return _default_classifier
+
+
