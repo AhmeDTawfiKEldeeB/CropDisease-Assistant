@@ -5,8 +5,19 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pydantic>=2.13.3",
-    "pydantic-settings>=2.14.0",
+    "fastapi==0.136.0",
+    "uvicorn==0.45.0",
+    "python-multipart==0.0.32",
+    "pydantic==2.13.3",
+    "pydantic-settings==2.14.0",
     "qdrant-client==1.17.1",
-    "sentence-transformers>=5.4.1",
+    "sentence-transformers==3.0.1",
+    "openai==1.82.0",
+    "langsmith==0.7.36",
+    "langchain-core>=0.1.0",
+    "torch==2.12.1",
+    "torchvision==0.27.1",
+    "pillow==12.2.0",
+    "numpy==2.4.4",
+    "rapidfuzz",
 ]
