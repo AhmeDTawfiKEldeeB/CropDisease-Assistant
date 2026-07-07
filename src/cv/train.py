@@ -4,8 +4,8 @@ import torch.optim as optim
 import os
 import time
 
-from src.data_loader import get_data_loaders
-from src.model import PlantDiseaseResNet
+from src.cv.data_loader import get_data_loaders
+from src.cv.model import PlantDiseaseResNet
 
 
 def train_model():

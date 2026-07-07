@@ -1,41 +1,96 @@
-import os
-from torchvision import datasets, transforms
+"""Data loaders for the plant-disease image dataset."""
+
+from pathlib import Path
+from typing import Tuple
+
+import torch
 from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
+
+from src.config import settings
 
 
-def get_data_loaders(data_dir, batch_size=32):
+def get_transforms(
+    image_size: int = settings.cv.image_size,
+) -> Tuple[transforms.Compose, transforms.Compose]:
+    """Return train and validation transforms."""
+    train_transform = transforms.Compose(
+        [
+            transforms.RandomResizedCrop(image_size),
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(20),
+            transforms.ColorJitter(brightness=0.2, contrast=0.2),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=settings.cv.normalize_mean,
+                std=settings.cv.normalize_std,
+            ),
+        ]
+    )
+
+    valid_transform = transforms.Compose(
+        [
+            transforms.Resize(image_size + 32),
+            transforms.CenterCrop(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=settings.cv.normalize_mean,
+                std=settings.cv.normalize_std,
+            ),
+        ]
+    )
+
+    return train_transform, valid_transform
 
 
-    train_dir = os.path.join(data_dir, 'train')
-    valid_dir = os.path.join(data_dir, 'valid')
+def get_data_loaders(
+    data_dir: str,
+    batch_size: int = 32,
+    image_size: int = settings.cv.image_size,
+    num_workers: int = 4,
+) -> Tuple[DataLoader, DataLoader, list]:
+    """
+    Build train/validation DataLoaders from ImageFolder splits.
 
-    train_transforms = transforms.Compose([
-        transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomRotation(20),
-        transforms.ColorJitter(brightness=0.2, contrast=0.2),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
+    Expects ``data_dir`` to contain ``train/`` and ``valid/`` subfolders, each
+    with one folder per class.
 
-    valid_transforms = transforms.Compose([
-        transforms.Resize(256),
-        transforms.CenterCrop(224),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
+    Args:
+        data_dir: Root directory containing ``train`` and ``valid`` folders.
+        batch_size: Number of samples per batch.
+        image_size: Size to resize/crop images to.
+        num_workers: Number of worker processes for data loading.
 
-    train_dataset = datasets.ImageFolder(train_dir, transform=train_transforms)
-    valid_dataset = datasets.ImageFolder(valid_dir, transform=valid_transforms)
+    Returns:
+        train_loader, valid_loader, class_names
+    """
+    root = Path(data_dir)
+    train_dir = root / "train"
+    valid_dir = root / "valid"
 
+    if not train_dir.is_dir():
+        raise FileNotFoundError(f"Training directory not found: {train_dir}")
+    if not valid_dir.is_dir():
+        raise FileNotFoundError(f"Validation directory not found: {valid_dir}")
 
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
-    valid_loader = DataLoader(valid_dataset, batch_size=batch_size, shuffle=False, num_workers=2)
+    train_transform, valid_transform = get_transforms(image_size)
 
-    class_names = train_dataset.classes
+    train_dataset = datasets.ImageFolder(root=str(train_dir), transform=train_transform)
+    valid_dataset = datasets.ImageFolder(root=str(valid_dir), transform=valid_transform)
 
-    return train_loader, valid_loader, class_names
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=torch.cuda.is_available(),
+    )
+    valid_loader = DataLoader(
+        valid_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=torch.cuda.is_available(),
+    )
 
-
-if __name__ == "__main__":
-    print("data_loader")
+    return train_loader, valid_loader, train_dataset.classes

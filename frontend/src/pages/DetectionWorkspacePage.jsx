@@ -93,39 +93,24 @@ export default function DetectionWorkspacePage() {
 
                 <div className="space-y-5 px-6 py-6">
                   <ProgressBar value={progress} />
-                  <div className="flex items-center justify-between text-sm text-on-surface-variant">
-                    <span>Identifying pathogen markers</span>
-                    <span className="font-semibold italic text-primary">{progress}%</span>
-                  </div>
-                  <div className="flex items-center justify-between gap-3 rounded-2xl bg-surface-container-low px-4 py-3">
-                    <span className="text-sm font-medium text-on-surface">Status</span>
-                    <span className={`text-sm font-semibold ${error ? "text-red-600" : result ? "text-[#235f34]" : "text-[#235f34]"}`}>
-                      {error || statusText}
-                    </span>
-                  </div>
-                  {result && (
-                    <div className={`rounded-2xl px-4 py-3 text-center ${result.top_confidence < 45 ? "bg-amber-50 border border-amber-300" : "bg-[#eaf3e7]"}`}>
-                      {result.top_confidence >= 45 && (
-                        <>
-                          <p className="text-xs font-bold uppercase tracking-wider text-[#235f34]">Detected Disease</p>
-                          <p className="mt-1 text-lg font-bold text-[#235f34]">{statusText}</p>
-                        </>
-                      )}
-                      <p className="mt-1 text-sm text-on-surface-variant">Confidence: {Math.round(result.top_confidence)}%</p>
-                      {result.top_confidence < 45 && (
-                        <p className="mt-2 text-sm font-semibold text-amber-700">
-                          Low confidence — try uploading another clearer, well-lit photo
-                        </p>
-                      )}
+                  {result && result.top_confidence >= 30 && (
+                    <div className="rounded-2xl bg-[#eaf3e7] px-4 py-3 text-center">
+                      <p className="text-xs font-bold uppercase tracking-wider text-[#235f34]">Detected Disease</p>
+                      <p className="mt-1 text-lg font-bold text-[#235f34]">{statusText}</p>
                     </div>
                   )}
-                  {result && result.top_confidence >= 45 && (
+                  {result && result.top_confidence >= 30 && (
                     <button
                       onClick={() => navigate("/assistant", { state: { disease: result.top_class } })}
                       className="w-full rounded-xl bg-primary py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg transition hover:bg-primary/90"
                     >
                       Ask Assistant
                     </button>
+                  )}
+                  {result && result.top_confidence < 30 && (
+                    <p className="text-center text-sm font-semibold text-red-700">
+                      This photo is not related to the detected disease or not clear enough please upload another clearer, well-lit photo
+                    </p>
                   )}
                   {preview && !scanning && !result && !error && (
                     <button

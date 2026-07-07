@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, UploadFile, File
 from PIL import Image
 
 from src.api.schemas import DetectResponse, PredictionItem
-from src.cv.predict import predict as run_prediction
+from src.cv import predict as run_prediction
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["detect"])
